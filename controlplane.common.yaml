@@ -8,7 +8,7 @@ machine:
     vm.nr_hugepages: "2048"
   install:
     disk: /dev/sda
-    image: ghcr.io/usa-reddragon/talos-installer:v1.6.0-alpha.0-53-ge99d288b5@ sha256:ffc367873e057bd0f664115c61af92900d8559b092062341f01830ac690500bc
+    image: ghcr.io/usa-reddragon/talos-installer:v1.5.3@sha256:fd7fde903f815c68e3b20687462ee5705654090642adf7ebda82b92054c2db8e
     extensions:
     - image: ghcr.io/siderolabs/amd-ucode:20230804@sha256:845a76c546837f19eca1c6c8aaff4a26fcbaca9e46028dede5321b372106927a
     - image: ghcr.io/siderolabs/amdgpu-firmware:20230804@sha256:92ce0e3df9c48947b167018ccafa478363bde1e902ec1a2c0f0d5b011339e15b
