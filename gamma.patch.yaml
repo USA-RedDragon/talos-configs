@@ -5,8 +5,10 @@ machine:
           [plugins."io.containerd.grpc.v1.cri"]
             [plugins."io.containerd.grpc.v1.cri".containerd]
               default_runtime_name = "nvidia"
+        [metrics]
+          address = "0.0.0.0:11234"
       path: /etc/cri/conf.d/20-customization.part
-      op: add
+      op: create
   certSANs:
   - gamma
   - 192.168.1.252

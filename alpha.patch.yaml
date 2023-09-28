@@ -2,6 +2,12 @@ machine:
   certSANs:
   - alpha
   - 192.168.1.254
+  files:
+    - content: |
+        [metrics]
+          address = "0.0.0.0:11234"
+      path: /etc/cri/conf.d/20-customization.part
+      op: create
   network:
     interfaces:
       - interface: bond0
