@@ -8,10 +8,10 @@ machine:
     vm.nr_hugepages: "2048"
   install:
     disk: /dev/sda
-    image: ghcr.io/usa-reddragon/talos-installer:v1.5.3@sha256:fd7fde903f815c68e3b20687462ee5705654090642adf7ebda82b92054c2db8e
+    image: ghcr.io/usa-reddragon/talos-installer:v1.5.3-1-gfcac67fb9@sha256:f43e2472a63be0f7911670b7647fd5f2300377cf722a89ba3c7478570411d4f1
     extensions:
-    - image: ghcr.io/siderolabs/amd-ucode:20230804@sha256:845a76c546837f19eca1c6c8aaff4a26fcbaca9e46028dede5321b372106927a
-    - image: ghcr.io/siderolabs/amdgpu-firmware:20230804@sha256:92ce0e3df9c48947b167018ccafa478363bde1e902ec1a2c0f0d5b011339e15b
+    - image: ghcr.io/usa-reddragon/talos-amd-ucode:20230804
+    - image: ghcr.io/usa-reddragon/talos-amdgpu-firmware:20230804
     wipe: false
     bootloader: true
   kernel:
@@ -58,10 +58,7 @@ cluster:
     serviceSubnets:
     - 172.18.0.0/16
     cni:
-      name: custom
-      urls:
-      - https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/tigera-operator.yaml
-      - https://raw.githubusercontent.com/USA-RedDragon/talos-configs/main/calico.yaml
+      name: flannel
   apiServer:
     certSANs:
     - api.k8s.mcswain.dev
