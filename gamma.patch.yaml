@@ -32,7 +32,7 @@ machine:
       - '192.168.1.252/32'
   install:
     extensions:
-    - image: ghcr.io/usa-reddragon/talos-nonfree-kmod-nvidia:535.54.03-v1.5.3
+    - image: ghcr.io/usa-reddragon/talos-nonfree-kmod-nvidia:535.54.03-v1.5.3-1-ge4d0020
     - image: ghcr.io/usa-reddragon/talos-nvidia-container-toolkit:535.54.03-v1.13.5
   sysctls:
     net.core.bpf_jit_harden: 1
