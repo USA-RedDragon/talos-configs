@@ -1,0 +1,4 @@
+machine:
+  certSANs:
+  - beta
+  - 192.168.1.253

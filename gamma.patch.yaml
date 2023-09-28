@@ -1,0 +1,24 @@
+machine:
+  files:
+    - content: |
+        [plugins]
+          [plugins."io.containerd.grpc.v1.cri"]
+            [plugins."io.containerd.grpc.v1.cri".containerd]
+              default_runtime_name = "nvidia"
+      path: /etc/cri/conf.d/30-nvidia.part
+      op: create
+  certSANs:
+  - gamma
+  - 192.168.1.252
+  install:
+    extensions:
+    - image: ghcr.io/siderolabs/nonfree-kmod-nvidia:535.54.03-v1.5.0
+    - image: ghcr.io/siderolabs/nvidia-container-toolkit:535.54.03-v1.13.5
+  sysctls:
+    net.core.bpf_jit_harden: 1
+  kernel:
+    modules:
+    - name: nvidia
+    - name: nvidia_uvm
+    - name: nvidia_drm
+    - name: nvidia_modeset
