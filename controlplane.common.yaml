@@ -3,7 +3,7 @@ machine:
     - content: |
         [metrics]
           address = "0.0.0.0:11234"
-      path: /etc/cri/conf.d/20-metrics.part
+      path: /etc/cri/conf.d/20-customization.part
       op: create
   nodeLabels:
     openebs.io/engine: mayastor
@@ -18,7 +18,7 @@ machine:
     extensions:
     - image: ghcr.io/siderolabs/amd-ucode:20230804@sha256:845a76c546837f19eca1c6c8aaff4a26fcbaca9e46028dede5321b372106927a
     - image: ghcr.io/siderolabs/amdgpu-firmware:20230804@sha256:92ce0e3df9c48947b167018ccafa478363bde1e902ec1a2c0f0d5b011339e15b
-    wipe: true
+    wipe: false
     bootloader: true
   kernel:
     modules:
@@ -27,48 +27,9 @@ machine:
     - name: br_netfilter
     - name: iptable_raw
     - name: ip6_tables
-  sysfs:
-    devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu4.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu5.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu6.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu7.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu8.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu12.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu13.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu16.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu17.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu18.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu19.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu20.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu21.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu22.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu23.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu24.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu25.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu26.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu27.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu28.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu29.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu30.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu31.cpufreq.scaling_governor: performance
   network:
-    interfaces:
-    - interface: bond0
-      dhcp: true
-      bond:
-        deviceSelectors:
-        - hardwareAddr: '00:0F:53:*'
-        mode: 802.3ad
-        lacpRate: fast
+    nameservers:
+    - 192.168.1.3
 
     # # Machine system disk encryption configuration.
     # systemDiskEncryption:
