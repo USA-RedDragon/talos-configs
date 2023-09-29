@@ -23,6 +23,7 @@ machine:
     extensions:
     - image: ghcr.io/usa-reddragon/talos-amd-ucode:20230804
     - image: ghcr.io/usa-reddragon/talos-amdgpu-firmware:20230804
+    - image: ghcr.io/siderolabs/iscsi-tools:v0.1.1
     wipe: false
     bootloader: true
   kernel:
