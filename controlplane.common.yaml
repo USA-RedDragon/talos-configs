@@ -72,10 +72,10 @@ cluster:
       name: flannel
   apiServer:
     certSANs:
-    - api.k8s.mcswain.dev
-    - alpha.k8s.mcswain.dev
-    - beta.k8s.mcswain.dev
-    - gamma.k8s.mcswain.dev
+    - api.k8s.jacob.network
+    - alpha.k8s.jacob.network
+    - beta.k8s.jacob.network
+    - gamma.k8s.jacob.network
     - 192.168.1.254
     - 192.168.1.253
     - 192.168.1.252
