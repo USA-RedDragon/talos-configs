@@ -6,6 +6,17 @@ machine:
     net.bridge.bridge-nf-call-iptables: "1"
     net.bridge.bridge-nf-call-ip6tables: "1"
     vm.nr_hugepages: "2048"
+  kubelet:
+    extraArgs:
+      allowed-unsafe-sysctls: net.ipv4.conf.all.src_valid_mark
+    extraMounts:
+    - destination: /var/openebs/local
+      type: bind
+      source: /var/openebs/local
+      options:
+        - bind
+        - rshared
+        - rw
   install:
     disk: /dev/sda
     image: ghcr.io/usa-reddragon/talos-installer:v1.5.3-1-gfcac67fb9@sha256:f43e2472a63be0f7911670b7647fd5f2300377cf722a89ba3c7478570411d4f1
