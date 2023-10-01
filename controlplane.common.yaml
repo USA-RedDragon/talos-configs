@@ -71,6 +71,13 @@ cluster:
     - 172.18.0.0/16
     cni:
       name: flannel
+  scheduler:
+    extraArgs:
+      config: /var/etc/kube-scheduler-config.yaml
+    extraVolumes:
+    - hostPath: /var/etc/kube-scheduler-config.yaml
+      mountPath: /var/etc/kube-scheduler-config.yaml
+      readonly: true
   apiServer:
     extraArgs:
       oidc-client-id: YR6w7D1wpv6QTsbCFEEMdDjsiDP2V6O8GlB9Zakb
