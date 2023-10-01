@@ -72,6 +72,13 @@ cluster:
     cni:
       name: flannel
   apiServer:
+    extraArgs:
+      oidc-client-id: YR6w7D1wpv6QTsbCFEEMdDjsiDP2V6O8GlB9Zakb
+      oidc-username-claim: email
+      oidc-username-prefix: 'oidc:'
+      oidc-groups-claim: groups
+      oidc-groups-prefix: 'oidc:'
+      oidc-issuer-url: https://authentik.mcswain.dev/application/o/kubernetes-api-server/
     certSANs:
     - api.k8s.jacob.network
     - alpha.k8s.jacob.network
