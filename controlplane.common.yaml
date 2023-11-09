@@ -26,11 +26,6 @@ machine:
         - rw
   install:
     disk: /dev/sda
-    image: ghcr.io/usa-reddragon/talos-installer:v1.5.3-1-gfcac67fb9@sha256:f43e2472a63be0f7911670b7647fd5f2300377cf722a89ba3c7478570411d4f1
-    extensions:
-    - image: ghcr.io/usa-reddragon/talos-amd-ucode:20230804
-    - image: ghcr.io/usa-reddragon/talos-amdgpu-firmware:20230804
-    - image: ghcr.io/siderolabs/iscsi-tools:v0.1.1
     wipe: false
     bootloader: true
   kernel:
@@ -40,6 +35,7 @@ machine:
     - name: br_netfilter
     - name: iptable_raw
     - name: ip6_tables
+    - name: sfc_siena
   network:
     nameservers:
     - 192.168.1.3
@@ -85,6 +81,24 @@ cluster:
     - hostPath: /var/etc/kube-scheduler-config.yaml
       mountPath: /var/etc/kube-scheduler-config.yaml
       readonly: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      limits:
+        cpu: 200m
+        memory: 120Mi
+  controllerManager:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 175Mi
+      limits:
+        cpu: 120m
+        memory: 200Mi
+  proxy:
+    extraArgs:
+      metrics-bind-address: '0.0.0.0:10249'
   apiServer:
     extraArgs:
       oidc-client-id: YR6w7D1wpv6QTsbCFEEMdDjsiDP2V6O8GlB9Zakb
@@ -99,6 +113,13 @@ cluster:
     - 192.168.1.254
     - 192.168.1.253
     - 192.168.1.252
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+      limits:
+        cpu: 1200m
+        memory: 2500Mi
     admissionControl:
     - name: PodSecurity
       configuration:

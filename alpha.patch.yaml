@@ -57,3 +57,9 @@ machine:
     devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
+  install:
+    image: ghcr.io/siderolabs/installer:v1.6.0-alpha.0-63-g5fc60d2ca
+    extensions:
+    - image: ghcr.io/siderolabs/amd-ucode:20230919
+    - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
+    - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4

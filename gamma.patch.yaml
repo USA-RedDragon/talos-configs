@@ -48,10 +48,6 @@ machine:
     nodeIP:
       validSubnets:
       - '192.168.1.252/32'
-  install:
-    extensions:
-    - image: ghcr.io/usa-reddragon/talos-nonfree-kmod-nvidia:535.54.03-v1.5.3-1-ge4d0020
-    - image: ghcr.io/usa-reddragon/talos-nvidia-container-toolkit:535.54.03-v1.13.5
   sysctls:
     net.core.bpf_jit_harden: 1
   kernel:
@@ -77,3 +73,11 @@ machine:
     devices.system.cpu.cpu13.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
+  install:
+    image: ghcr.io/usa-reddragon/talos-installer:v1.5.3-1-gfcac67fb9@sha256:f43e2472a63be0f7911670b7647fd5f2300377cf722a89ba3c7478570411d4f1
+    extensions:
+    - image: ghcr.io/usa-reddragon/talos-amd-ucode:20230804
+    - image: ghcr.io/usa-reddragon/talos-amdgpu-firmware:20230804
+    - image: ghcr.io/siderolabs/iscsi-tools:v0.1.1
+    - image: ghcr.io/usa-reddragon/talos-nonfree-kmod-nvidia:535.54.03-v1.5.3-1-ge4d0020
+    - image: ghcr.io/usa-reddragon/talos-nvidia-container-toolkit:535.54.03-v1.13.5
