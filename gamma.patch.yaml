@@ -9,24 +9,6 @@ machine:
           address = "0.0.0.0:11234"
       path: /etc/cri/conf.d/20-customization.part
       op: create
-    - content: |
-        apiVersion: kubescheduler.config.k8s.io/v1
-        kind: KubeSchedulerConfiguration
-        clientConnection:
-          kubeconfig: /system/secrets/kubernetes/kube-scheduler/kubeconfig
-        profiles:
-          - schedulerName: default-scheduler
-            pluginConfig:
-              - name: PodTopologySpread
-                args:
-                  defaultConstraints:
-                    - maxSkew: 1
-                      topologyKey: kubernetes.io/hostname
-                      whenUnsatisfiable: ScheduleAnyway
-                  defaultingType: List
-      path: /var/etc/kube-scheduler-config.yaml
-      permissions: 0o664
-      op: create
   certSANs:
   - gamma
   - 192.168.1.252
@@ -74,10 +56,10 @@ machine:
     devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
   install:
-    image: ghcr.io/usa-reddragon/talos-installer:v1.5.3-1-gfcac67fb9@sha256:f43e2472a63be0f7911670b7647fd5f2300377cf722a89ba3c7478570411d4f1
+    image: ghcr.io/siderolabs/installer:v1.6.0-beta.0
     extensions:
-    - image: ghcr.io/usa-reddragon/talos-amd-ucode:20230804
-    - image: ghcr.io/usa-reddragon/talos-amdgpu-firmware:20230804
-    - image: ghcr.io/siderolabs/iscsi-tools:v0.1.1
-    - image: ghcr.io/usa-reddragon/talos-nonfree-kmod-nvidia:535.54.03-v1.5.3-1-ge4d0020
-    - image: ghcr.io/usa-reddragon/talos-nvidia-container-toolkit:535.54.03-v1.13.5
+    - image: ghcr.io/siderolabs/amd-ucode:20231111
+    - image: ghcr.io/siderolabs/amdgpu-firmware:20231111
+    - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
+    - image: ghcr.io/siderolabs/nonfree-kmod-nvidia:535.129.03-v1.6.0-beta.0
+    - image: ghcr.io/siderolabs/nvidia-container-toolkit:535.129.03-v1.13.5

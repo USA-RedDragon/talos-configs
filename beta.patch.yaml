@@ -5,24 +5,6 @@ machine:
           address = "0.0.0.0:11234"
       path: /etc/cri/conf.d/20-customization.part
       op: create
-    - content: |
-        apiVersion: kubescheduler.config.k8s.io/v1
-        kind: KubeSchedulerConfiguration
-        clientConnection:
-          kubeconfig: /system/secrets/kubernetes/kube-scheduler/kubeconfig
-        profiles:
-          - schedulerName: default-scheduler
-            pluginConfig:
-              - name: PodTopologySpread
-                args:
-                  defaultConstraints:
-                    - maxSkew: 1
-                      topologyKey: kubernetes.io/hostname
-                      whenUnsatisfiable: ScheduleAnyway
-                  defaultingType: List
-      path: /var/etc/kube-scheduler-config.yaml
-      permissions: 0o664
-      op: create
   certSANs:
   - beta
   - 192.168.1.253
@@ -58,8 +40,8 @@ machine:
     devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
   install:
-    image: ghcr.io/siderolabs/installer:v1.6.0-alpha.0-63-g5fc60d2ca
+    image: ghcr.io/siderolabs/installer:v1.6.0-beta.0
     extensions:
-    - image: ghcr.io/siderolabs/amd-ucode:20230919
-    - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
+    - image: ghcr.io/siderolabs/amd-ucode:20231111
+    - image: ghcr.io/siderolabs/amdgpu-firmware:20231111
     - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4

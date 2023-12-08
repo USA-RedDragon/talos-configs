@@ -26,6 +26,8 @@ machine:
         - rw
   install:
     disk: /dev/sda
+    extraKernelArgs:
+    - isolcpu="1,3"
     wipe: false
     bootloader: true
   kernel:
@@ -75,12 +77,21 @@ cluster:
     cni:
       name: flannel
   scheduler:
-    extraArgs:
-      config: /var/etc/kube-scheduler-config.yaml
-    extraVolumes:
-    - hostPath: /var/etc/kube-scheduler-config.yaml
-      mountPath: /var/etc/kube-scheduler-config.yaml
-      readonly: true
+    config:
+      apiVersion: kubescheduler.config.k8s.io/v1
+      kind: KubeSchedulerConfiguration
+      clientConnection:
+        kubeconfig: /system/secrets/kubernetes/kube-scheduler/kubeconfig
+      profiles:
+        - schedulerName: default-scheduler
+          pluginConfig:
+            - name: PodTopologySpread
+              args:
+                defaultConstraints:
+                  - maxSkew: 1
+                    topologyKey: kubernetes.io/hostname
+                    whenUnsatisfiable: ScheduleAnyway
+                defaultingType: List
     resources:
       requests:
         cpu: 100m
