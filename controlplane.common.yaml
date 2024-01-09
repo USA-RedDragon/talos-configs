@@ -41,7 +41,8 @@ machine:
     - name: sfc_siena
   network:
     nameservers:
-    - 192.168.1.3
+    - 192.168.1.1
+    - 2600:8803:a300:524::1
 
     # # Machine system disk encryption configuration.
     # systemDiskEncryption:
@@ -73,8 +74,10 @@ cluster:
   network:
     podSubnets:
     - 172.17.0.0/16
+    - 2001:abba:237c::/56
     serviceSubnets:
     - 172.18.0.0/16
+    - 2001:baab:237c::/112
     cni:
       name: flannel
   scheduler:
