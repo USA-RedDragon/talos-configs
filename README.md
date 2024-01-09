@@ -21,3 +21,8 @@ Then, apply the node configs with `talosctl -n ip.to.your.node apply-config -f n
 ## Modifying
 
 If you want to use these configs as a base for your own, you can fork this repository and modify the `controlplane.common.yaml` file to your liking and modify the extensions in `schematic.*yaml`. You can also modify the `nodename.patch.yaml` files to change the node-specific configs. If you want to add more nodes, you can create a new `nodename.patch.yaml` file and add it to the `generate.sh` script.
+
+## Wants/TODOs
+
+- Disk encryption
+- Ability to configure RAID0 for the root partition
