@@ -139,6 +139,9 @@ cluster:
     - 192.168.1.254
     - 192.168.1.253
     - 192.168.1.252
+    - fdeb:abba:237c::fe
+    - fdeb:abba:237c::fd
+    - fdeb:abba:237c::fc
     resources:
       requests:
         cpu: 1000m
