@@ -13,5 +13,18 @@
             ],
             "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver-coerced{{/if}}"
         }
+    ],
+    "packageRules": [
+        {
+            "groupName": "Kubernetes containers",
+            "matchDatasources": [
+                "docker",
+                "kubernetes"
+            ],
+            "matchPackagePrefixes": [
+                "ghcr.io/siderolabs/kubelet",
+                "registry.k8s.io/kube-*"
+            ]
+        }
     ]
 }
