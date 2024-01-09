@@ -14,7 +14,7 @@ machine:
     net.bridge.bridge-nf-call-ip6tables: "1"
     vm.nr_hugepages: "2048"
   kubelet:
-    image: ghcr.io/siderolabs/kubelet:v1.28.5
+    image: ghcr.io/siderolabs/kubelet:v1.29.0
     extraArgs:
       allowed-unsafe-sysctls: net.ipv4.conf.all.src_valid_mark
     extraMounts:
