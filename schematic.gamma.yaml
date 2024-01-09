@@ -1,0 +1,11 @@
+customization:
+    extraKernelArgs:
+        - isolcpu="1,3"
+    systemExtensions:
+        officialExtensions:
+            - siderolabs/util-linux-tools
+            - siderolabs/amdgpu-firmware
+            - siderolabs/amd-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/nonfree-kmod-nvidia
+            - siderolabs/nvidia-container-toolkit

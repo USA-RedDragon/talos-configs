@@ -55,11 +55,3 @@ machine:
     devices.system.cpu.cpu13.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
-  install:
-    image: ghcr.io/siderolabs/installer:v1.6.0-beta.0
-    extensions:
-    - image: ghcr.io/siderolabs/amd-ucode:20231111
-    - image: ghcr.io/siderolabs/amdgpu-firmware:20231111
-    - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
-    - image: ghcr.io/siderolabs/nonfree-kmod-nvidia:535.129.03-v1.6.0-beta.0
-    - image: ghcr.io/siderolabs/nvidia-container-toolkit:535.129.03-v1.13.5

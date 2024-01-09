@@ -39,9 +39,3 @@ machine:
     devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
-  install:
-    image: ghcr.io/siderolabs/installer:v1.6.0-beta.0
-    extensions:
-    - image: ghcr.io/siderolabs/amd-ucode:20231111
-    - image: ghcr.io/siderolabs/amdgpu-firmware:20231111
-    - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
