@@ -13,5 +13,20 @@
             ],
             "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver-coerced{{/if}}"
         }
+    ],
+    "packageRules": [
+        {
+            "groupName": "Kubernetes containers",
+            "matchDatasources": [
+                "docker"
+            ],
+            "matchPackageNames": [
+                "ghcr.io/siderolabs/kubelet",
+                "registry.k8s.io/kube-scheduler",
+                "registry.k8s.io/kube-proxy",
+                "registry.k8s.io/kube-controller-manager",
+                "registry.k8s.io/kube-apiserver"
+            ]
+        }
     ]
 }
