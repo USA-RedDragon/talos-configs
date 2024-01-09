@@ -32,6 +32,37 @@ machine:
         - bind
         - rshared
         - rw
+    - destination: /var/lib/longhorn-ssd
+      type: bind
+      source: /var/lib/longhorn-ssd
+      options:
+        - bind
+        - rshared
+        - rw
+    - destination: /var/lib/longhorn-nvme-1
+      type: bind
+      source: /var/lib/longhorn-nvme-1
+      options:
+        - bind
+        - rshared
+        - rw
+    - destination: /var/lib/longhorn-nvme-2
+      type: bind
+      source: /var/lib/longhorn-nvme-2
+      options:
+        - bind
+        - rshared
+        - rw
+  disks:
+    - device: /dev/sdb
+      partitions:
+        - mountpoint: /var/lib/longhorn-ssd
+    - device: /dev/nvme0n1
+      partitions:
+        - mountpoint: /var/lib/longhorn-nvme-1
+    - device: /dev/nvme1n1
+      partitions:
+        - mountpoint: /var/lib/longhorn-nvme-2
   install:
     disk: /dev/sda
     extraKernelArgs:
