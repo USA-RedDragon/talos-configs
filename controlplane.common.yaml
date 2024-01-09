@@ -121,7 +121,7 @@ cluster:
         cpu: 120m
         memory: 200Mi
   proxy:
-    image: registry.k8s.io/kube-proxy:v1.28.5
+    image: registry.k8s.io/kube-proxy:v1.29.0
     extraArgs:
       metrics-bind-address: '0.0.0.0:10249'
   apiServer:
