@@ -1,6 +1,6 @@
 # Talos Configs
 
-This is a repository containing my personal [Talos](https://www.talos.dev/) configs. I name my nodes after the Greek alphabet, so the files follow this naming convention.
+This is a repository containing my personal [Talos](https://www.talos.dev/) configs. I name my nodes after the Greek alphabet, so the files follow this naming convention. The nodes are AMD-based systems, except for `gamma` which is an AMD CPU but an Nvidia GPU. These nodes have my [home cluster Flux repository](https://github.com/USA-RedDragon/home-cluster-flux) running on them.
 
 ## Usage
 
