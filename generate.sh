@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# renovate: datasource=github-releases depName=siderolabs/talos
 TALOS_VERSION=v1.6.1
 
 talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @controlplane.common.yaml --output-types controlplane --force -o controlplane.yaml home https://api.k8s.jacob.network:6443
