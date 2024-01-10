@@ -2,7 +2,6 @@ machine:
   certSANs:
   - alpha
   - 192.168.1.254
-  - fdeb:abba:237c::fe
   files:
     - content: |
         [metrics]
@@ -15,7 +14,7 @@ machine:
         dhcp: true
         dhcpOptions:
           ipv4: true
-          ipv6: true
+          ipv6: false
         bond:
           deviceSelectors:
           - hardwareAddr: '00:0f:53:*'
@@ -25,7 +24,6 @@ machine:
     nodeIP:
       validSubnets:
       - 192.168.1.254/32
-      - fdeb:abba:237c::fe/128
   sysfs:
     devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu1.cpufreq.scaling_governor: performance

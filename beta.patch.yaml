@@ -8,14 +8,13 @@ machine:
   certSANs:
   - beta
   - 192.168.1.253
-  - fdeb:abba:237c::fd
   network:
     interfaces:
       - interface: bond0
         dhcp: true
         dhcpOptions:
           ipv4: true
-          ipv6: true
+          ipv6: false
         bond:
           deviceSelectors:
           - hardwareAddr: '00:0f:53:*'
@@ -25,7 +24,6 @@ machine:
     nodeIP:
       validSubnets:
       - 192.168.1.253/32
-      - fdeb:abba:237c::fd/128
   sysfs:
     devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu1.cpufreq.scaling_governor: performance

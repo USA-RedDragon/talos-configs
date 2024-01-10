@@ -12,14 +12,13 @@ machine:
   certSANs:
   - gamma
   - 192.168.1.252
-  - fdeb:abba:237c::fc
   network:
     interfaces:
       - interface: bond0
         dhcp: true
         dhcpOptions:
           ipv4: true
-          ipv6: true
+          ipv6: false
         bond:
           deviceSelectors:
           - hardwareAddr: '00:0f:53:*'
@@ -29,7 +28,6 @@ machine:
     nodeIP:
       validSubnets:
       - 192.168.1.252/32
-      - fdeb:abba:237c::fc/128
   sysctls:
     net.core.bpf_jit_harden: 1
   kernel:
