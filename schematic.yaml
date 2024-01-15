@@ -1,4 +1,6 @@
 customization:
+    extraKernelArgs:
+    - "nomodeset"
     systemExtensions:
         officialExtensions:
             - siderolabs/util-linux-tools
