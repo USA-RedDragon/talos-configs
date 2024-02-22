@@ -9,7 +9,7 @@ COLOR_YELLOW='\033[0;33m'
 COLOR_CLEAR='\033[0m'
 
 # renovate: datasource=github-releases depName=siderolabs/talos
-TALOS_VERSION=v1.6.1
+TALOS_VERSION=v1.6.5
 
 # Clear any old generated files
 rm -rf alpha.yaml beta.yaml gamma.yaml controlplane.yaml

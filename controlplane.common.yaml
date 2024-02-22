@@ -67,12 +67,13 @@ machine:
     bootloader: true
   kernel:
     modules:
-    - name: nvme-tcp
     - name: overlay
     - name: br_netfilter
     - name: iptable_raw
     - name: ip6_tables
     - name: sfc_siena
+    - name: amdgpu
+    # - name: uvcvideo # Talos v1.7
   network:
     nameservers:
     - 192.168.1.1
@@ -163,6 +164,7 @@ cluster:
     - 192.168.1.254
     - 192.168.1.253
     - 192.168.1.252
+    - 127.0.0.1
     resources:
       requests:
         cpu: 1000m

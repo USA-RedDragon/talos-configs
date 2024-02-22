@@ -11,6 +11,7 @@ machine:
       op: create
   certSANs:
   - gamma
+  - 127.0.0.1
   - 192.168.1.252
   network:
     interfaces:

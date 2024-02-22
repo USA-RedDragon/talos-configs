@@ -1,6 +1,7 @@
 customization:
     systemExtensions:
         officialExtensions:
+            # - siderolabs/v4l-uvc-drivers # Talos v1.7
             - siderolabs/util-linux-tools
             - siderolabs/amdgpu-firmware
             - siderolabs/amd-ucode
