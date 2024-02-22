@@ -12,7 +12,7 @@ machine:
     net.bridge.bridge-nf-call-ip6tables: "1"
     vm.nr_hugepages: "2048"
   kubelet:
-    image: ghcr.io/siderolabs/kubelet:v1.28.5
+    image: ghcr.io/siderolabs/kubelet:v1.29.2
     extraArgs:
       allowed-unsafe-sysctls: net.ipv4.conf.all.src_valid_mark
     extraMounts:
@@ -113,7 +113,7 @@ cluster:
     cni:
       name: flannel
   scheduler:
-    image: registry.k8s.io/kube-scheduler:v1.28.5
+    image: registry.k8s.io/kube-scheduler:v1.29.2
     config:
       apiVersion: kubescheduler.config.k8s.io/v1
       kind: KubeSchedulerConfiguration
@@ -137,7 +137,7 @@ cluster:
         cpu: 200m
         memory: 120Mi
   controllerManager:
-    image: registry.k8s.io/kube-controller-manager:v1.28.5
+    image: registry.k8s.io/kube-controller-manager:v1.29.2
     resources:
       requests:
         cpu: 100m
@@ -146,11 +146,11 @@ cluster:
         cpu: 120m
         memory: 200Mi
   proxy:
-    image: registry.k8s.io/kube-proxy:v1.28.5
+    image: registry.k8s.io/kube-proxy:v1.29.2
     extraArgs:
       metrics-bind-address: '0.0.0.0:10249'
   apiServer:
-    image: registry.k8s.io/kube-apiserver:v1.28.5
+    image: registry.k8s.io/kube-apiserver:v1.29.2
     extraArgs:
       oidc-client-id: YR6w7D1wpv6QTsbCFEEMdDjsiDP2V6O8GlB9Zakb
       oidc-username-claim: email
