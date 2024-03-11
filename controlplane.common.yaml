@@ -71,7 +71,6 @@ machine:
     - name: br_netfilter
     - name: iptable_raw
     - name: ip6_tables
-    - name: sfc_siena
     - name: mlx4_en
     - name: amdgpu
     # - name: uvcvideo # Talos v1.7

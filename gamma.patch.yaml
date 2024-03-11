@@ -22,7 +22,8 @@ machine:
           ipv6: false
         bond:
           deviceSelectors:
-          - hardwareAddr: 'ef:1d:2d:*'
+          - hardwareAddr: '08:bf:b8:*'
+          - hardwareAddr: 'e4:1d:2d:*'
           mode: 802.3ad
           lacpRate: fast
   kubelet:
