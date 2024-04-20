@@ -84,7 +84,7 @@ machine:
 cluster:
   allowSchedulingOnControlPlanes: true
   scheduler:
-    image: registry.k8s.io/kube-scheduler:v1.29.2
+    image: registry.k8s.io/kube-scheduler:v1.30.0
     extraArgs:
       bind-address: '0.0.0.0'
     config:
@@ -110,7 +110,7 @@ cluster:
         cpu: 200m
         memory: 120Mi
   controllerManager:
-    image: registry.k8s.io/kube-controller-manager:v1.29.2
+    image: registry.k8s.io/kube-controller-manager:v1.30.0
     extraArgs:
       bind-address: '0.0.0.0'
     resources:
@@ -121,11 +121,11 @@ cluster:
         cpu: 120m
         memory: 200Mi
   proxy:
-    image: registry.k8s.io/kube-proxy:v1.29.2
+    image: registry.k8s.io/kube-proxy:v1.30.0
     extraArgs:
       metrics-bind-address: '0.0.0.0:10249'
   apiServer:
-    image: registry.k8s.io/kube-apiserver:v1.29.2
+    image: registry.k8s.io/kube-apiserver:v1.30.0
     extraArgs:
       oidc-client-id: YR6w7D1wpv6QTsbCFEEMdDjsiDP2V6O8GlB9Zakb
       oidc-username-claim: email
