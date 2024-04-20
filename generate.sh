@@ -22,14 +22,14 @@ if [ ! -f secrets.yaml ]; then
 fi
 
 # Use talosctl to generate the node configs
-talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @controlplane.common.yaml --output-types controlplane --force -o controlplane.yaml home https://api.k8s.jacob.network:6443
-talosctl machineconfig patch controlplane.yaml --patch @alpha.patch.yaml --output alpha.yaml
-talosctl machineconfig patch controlplane.yaml --patch @beta.patch.yaml --output beta.yaml
-talosctl machineconfig patch controlplane.yaml --patch @gamma.patch.yaml --output gamma.yaml
+talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane.yaml home https://api.k8s.jacob.network:6443
+talosctl machineconfig patch controlplane.yaml --patch @./controlplane/alpha.patch.yaml --output alpha.yaml
+talosctl machineconfig patch controlplane.yaml --patch @./controlplane/beta.patch.yaml --output beta.yaml
+talosctl machineconfig patch controlplane.yaml --patch @./controlplane/gamma.patch.yaml --output gamma.yaml
 
 # Use https://factory.talos.dev to generate an installer image ID
-INSTALLER_ID=$(curl -fSsL -X POST --data-binary @schematic.yaml https://factory.talos.dev/schematics | jq -r .id)
-GAMMA_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @schematic.gamma.yaml https://factory.talos.dev/schematics | jq -r .id)
+INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./controlplane/schematic.yaml https://factory.talos.dev/schematics | jq -r .id)
+GAMMA_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./controlplane/schematic.gamma.yaml https://factory.talos.dev/schematics | jq -r .id)
 
 # Use yq to set the installer image ID in the node configs
 INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' alpha.yaml
