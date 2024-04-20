@@ -1,6 +1,10 @@
 # Talos Configs
 
-This is a repository containing my personal [Talos](https://www.talos.dev/) configs. I name my nodes after the Greek alphabet, so the files follow this naming convention. The nodes are AMD-based systems, except for `gamma` which is an AMD CPU but an Nvidia GPU. These nodes have my [home cluster Flux repository](https://github.com/USA-RedDragon/home-cluster-flux) running on them.
+This is a repository containing my personal [Talos](https://www.talos.dev/) configs. These nodes have my [home cluster Flux repository](https://github.com/USA-RedDragon/home-cluster-flux) running on them.
+
+I name my control plane nodes after the Greek alphabet and my worker nodes in the reverse Greek alphabet. i.e. Alpha, Beta, Gamma, Delta, etc. for control-plane nodes and Omega, Psi, Chi, etc. for worker nodes.
+
+The control plane nodes are hosted at my home and are AMD-based systems, except for `gamma` which is an AMD CPU but an Nvidia GPU. The worker nodes are ran out of some AWS reserved instances I have.
 
 ## Usage
 
