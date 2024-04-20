@@ -1,4 +1,16 @@
 machine:
+  kubelet:
+    image: ghcr.io/siderolabs/kubelet:v1.29.2
+    extraArgs:
+      allowed-unsafe-sysctls: net.ipv4.conf.all.src_valid_mark
+    extraMounts:
+    - destination: /var/lib/longhorn
+      type: bind
+      source: /var/lib/longhorn
+      options:
+        - bind
+        - rshared
+        - rw
   features:
     kubernetesTalosAPIAccess:
       enabled: true

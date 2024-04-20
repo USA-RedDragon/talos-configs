@@ -1,19 +1,9 @@
 machine:
   kubelet:
-    image: ghcr.io/siderolabs/kubelet:v1.29.2
-    extraArgs:
-      allowed-unsafe-sysctls: net.ipv4.conf.all.src_valid_mark
     extraMounts:
     - destination: /var/openebs/local
       type: bind
       source: /var/openebs/local
-      options:
-        - bind
-        - rshared
-        - rw
-    - destination: /var/lib/longhorn
-      type: bind
-      source: /var/lib/longhorn
       options:
         - bind
         - rshared

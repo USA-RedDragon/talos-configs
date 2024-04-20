@@ -1,0 +1,6 @@
+customization:
+    systemExtensions:
+        officialExtensions:
+            - siderolabs/util-linux-tools
+            - siderolabs/iscsi-tools
+            - siderolabs/tailscale
