@@ -3,7 +3,7 @@ customization:
     - "nomodeset"
     systemExtensions:
         officialExtensions:
-            - siderolabs/v4l-uvc-driver
+            - siderolabs/v4l-uvc-drivers
             - siderolabs/util-linux-tools
             - siderolabs/amdgpu-firmware
             - siderolabs/amd-ucode
