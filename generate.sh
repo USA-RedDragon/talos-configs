@@ -38,6 +38,8 @@ talosctl machineconfig patch worker.yaml --patch @./workers/omega.patch.yaml --o
 talosctl machineconfig patch worker.yaml --patch @./workers/psi.patch.yaml --output psi.yaml
 talosctl machineconfig patch worker.yaml --patch @./workers/chi.patch.yaml --output chi.yaml
 
+rm controlplane.yaml worker.yaml
+
 # Use https://factory.talos.dev to generate an installer image ID
 INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./controlplane/schematic.yaml https://factory.talos.dev/schematics | jq -r .id)
 GAMMA_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./controlplane/schematic.gamma.yaml https://factory.talos.dev/schematics | jq -r .id)
