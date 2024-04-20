@@ -3,4 +3,11 @@ alpha.yaml
 beta.yaml
 gamma.yaml
 controlplane.yaml
-controlplane-precommon.yaml
+controlplane-premachine.yaml
+controlplane-precluster.yaml
+omega.yaml
+psi.yaml
+chi.yaml
+worker.yaml
+worker-premachine.yaml
+worker-precluster.yaml

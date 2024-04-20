@@ -1,0 +1,8 @@
+cluster:
+  network:
+    podSubnets:
+    - 172.17.0.0/16
+    serviceSubnets:
+    - 172.18.0.0/16
+    cni:
+      name: flannel

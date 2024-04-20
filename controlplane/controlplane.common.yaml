@@ -93,13 +93,6 @@ machine:
     #         #     - no_write_workqueue
 cluster:
   allowSchedulingOnControlPlanes: true
-  network:
-    podSubnets:
-    - 172.17.0.0/16
-    serviceSubnets:
-    - 172.18.0.0/16
-    cni:
-      name: flannel
   scheduler:
     image: registry.k8s.io/kube-scheduler:v1.29.2
     extraArgs:

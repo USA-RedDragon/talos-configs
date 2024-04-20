@@ -12,7 +12,7 @@ COLOR_CLEAR='\033[0m'
 TALOS_VERSION=v1.6.5
 
 # Clear any old generated files
-rm -rf alpha.yaml beta.yaml gamma.yaml controlplane.yaml
+rm -rf alpha.yaml beta.yaml gamma.yaml controlplane.yaml controlplane-premachine.yaml controlplane-precluster.yaml worker.yaml worker-premachine.yaml worker-precluster.yaml
 
 # If secrets.yaml doesn't exist, create it
 if [ ! -f secrets.yaml ]; then
@@ -22,12 +22,21 @@ if [ ! -f secrets.yaml ]; then
 fi
 
 # Use talosctl to generate the node configs
-talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane-precommon.yaml home https://api.k8s.jacob.network:6443
-talosctl machineconfig patch controlplane-precommon.yaml --patch @machine.common.yaml --output controlplane.yaml
-rm controlplane-precommon.yaml
+talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane-premachine.yaml home https://api.k8s.jacob.network:6443
+talosctl machineconfig patch controlplane-premachine.yaml --patch @machine.common.yaml --output controlplane-precluster.yaml
+talosctl machineconfig patch controlplane-precluster.yaml --patch @cluster.common.yaml --output controlplane.yaml
+rm controlplane-premachine.yaml controlplane-precluster.yaml
 talosctl machineconfig patch controlplane.yaml --patch @./controlplane/alpha.patch.yaml --output alpha.yaml
 talosctl machineconfig patch controlplane.yaml --patch @./controlplane/beta.patch.yaml --output beta.yaml
 talosctl machineconfig patch controlplane.yaml --patch @./controlplane/gamma.patch.yaml --output gamma.yaml
+
+talosctl gen config --with-secrets secrets.yaml --config-patch-worker @./workers/worker.common.yaml --output-types worker --force -o worker-premachine.yaml home https://api.k8s.jacob.network:6443
+talosctl machineconfig patch worker-premachine.yaml --patch @machine.common.yaml --output worker-precluster.yaml
+talosctl machineconfig patch worker-precluster.yaml --patch @cluster.common.yaml --output worker.yaml
+rm worker-premachine.yaml worker-precluster.yaml
+talosctl machineconfig patch worker.yaml --patch @./workers/omega.patch.yaml --output omega.yaml
+talosctl machineconfig patch worker.yaml --patch @./workers/psi.patch.yaml --output psi.yaml
+talosctl machineconfig patch worker.yaml --patch @./workers/chi.patch.yaml --output chi.yaml
 
 # Use https://factory.talos.dev to generate an installer image ID
 INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./controlplane/schematic.yaml https://factory.talos.dev/schematics | jq -r .id)
