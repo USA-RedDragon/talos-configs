@@ -3,3 +3,4 @@ alpha.yaml
 beta.yaml
 gamma.yaml
 controlplane.yaml
+controlplane-precommon.yaml

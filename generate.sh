@@ -22,7 +22,9 @@ if [ ! -f secrets.yaml ]; then
 fi
 
 # Use talosctl to generate the node configs
-talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane.yaml home https://api.k8s.jacob.network:6443
+talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane-precommon.yaml home https://api.k8s.jacob.network:6443
+talosctl machineconfig patch controlplane-precommon.yaml --patch @machine.common.yaml --output controlplane.yaml
+rm controlplane-precommon.yaml
 talosctl machineconfig patch controlplane.yaml --patch @./controlplane/alpha.patch.yaml --output alpha.yaml
 talosctl machineconfig patch controlplane.yaml --patch @./controlplane/beta.patch.yaml --output beta.yaml
 talosctl machineconfig patch controlplane.yaml --patch @./controlplane/gamma.patch.yaml --output gamma.yaml
