@@ -106,9 +106,6 @@ cluster:
       requests:
         cpu: 100m
         memory: 100Mi
-      limits:
-        cpu: 200m
-        memory: 120Mi
   controllerManager:
     image: registry.k8s.io/kube-controller-manager:v1.30.0
     extraArgs:
@@ -117,9 +114,6 @@ cluster:
       requests:
         cpu: 100m
         memory: 175Mi
-      limits:
-        cpu: 120m
-        memory: 200Mi
   proxy:
     image: registry.k8s.io/kube-proxy:v1.30.0
     extraArgs:
@@ -143,10 +137,7 @@ cluster:
     resources:
       requests:
         cpu: 1000m
-        memory: 2Gi
-      limits:
-        cpu: 1200m
-        memory: 2500Mi
+        memory: 3Gi
     admissionControl:
     - name: PodSecurity
       configuration:
