@@ -8,39 +8,8 @@ machine:
         - bind
         - rshared
         - rw
-    - destination: /var/lib/longhorn-ssd
-      type: bind
-      source: /var/lib/longhorn-ssd
-      options:
-        - bind
-        - rshared
-        - rw
-    - destination: /var/lib/longhorn-nvme-1
-      type: bind
-      source: /var/lib/longhorn-nvme-1
-      options:
-        - bind
-        - rshared
-        - rw
-    - destination: /var/lib/longhorn-nvme-2
-      type: bind
-      source: /var/lib/longhorn-nvme-2
-      options:
-        - bind
-        - rshared
-        - rw
-  disks:
-    - device: /dev/sdb
-      partitions:
-        - mountpoint: /var/lib/longhorn-ssd
-    - device: /dev/nvme0n1
-      partitions:
-        - mountpoint: /var/lib/longhorn-nvme-1
-    - device: /dev/nvme1n1
-      partitions:
-        - mountpoint: /var/lib/longhorn-nvme-2
   install:
-    disk: /dev/sda
+    disk: /dev/nvme1n1
     wipe: false
     bootloader: true
   kernel:
@@ -49,9 +18,7 @@ machine:
     - name: br_netfilter
     - name: iptable_raw
     - name: ip6_tables
-    - name: mlx4_en
-    - name: amdgpu
-    # - name: uvcvideo # Talos v1.7
+    - name: uvcvideo
   network:
     nameservers:
     - 192.168.1.1
@@ -82,7 +49,7 @@ machine:
     #         #     - no_read_workqueue
     #         #     - no_write_workqueue
 cluster:
-  allowSchedulingOnControlPlanes: true
+  allowSchedulingOnControlPlanes: false
   scheduler:
     image: registry.k8s.io/kube-scheduler:v1.30.0
     extraArgs:
@@ -130,9 +97,15 @@ cluster:
     - alpha.k8s.jacob.network
     - beta.k8s.jacob.network
     - gamma.k8s.jacob.network
+    - chi.k8s.jacob.network
+    - psi.k8s.jacob.network
+    - omega.k8s.jacob.network
     - 192.168.1.254
     - 192.168.1.253
     - 192.168.1.252
+    - 192.168.1.251
+    - 192.168.1.250
+    - 192.168.1.249
     - 127.0.0.1
     resources:
       requests:

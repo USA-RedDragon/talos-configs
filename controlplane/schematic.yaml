@@ -5,6 +5,8 @@ customization:
         officialExtensions:
             - siderolabs/v4l-uvc-drivers
             - siderolabs/util-linux-tools
-            - siderolabs/amdgpu-firmware
-            - siderolabs/amd-ucode
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
             - siderolabs/iscsi-tools
+            - siderolabs/nut-client
+            - siderolabs/tailscale

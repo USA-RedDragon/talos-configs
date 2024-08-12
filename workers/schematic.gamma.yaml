@@ -3,8 +3,8 @@ customization:
         officialExtensions:
             - siderolabs/v4l-uvc-drivers
             - siderolabs/util-linux-tools
-            - siderolabs/amdgpu-firmware
             - siderolabs/amd-ucode
             - siderolabs/iscsi-tools
             - siderolabs/nonfree-kmod-nvidia
             - siderolabs/nvidia-container-toolkit
+            - siderolabs/nut-client

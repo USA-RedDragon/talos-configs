@@ -1,0 +1,32 @@
+machine:
+  certSANs:
+  - psi
+  - 127.0.0.1
+  - 192.168.1.250
+  files:
+    - content: |
+        [metrics]
+          address = "0.0.0.0:11234"
+      path: /etc/cri/conf.d/20-customization.part
+      op: create
+  network:
+    interfaces:
+      - interface: enp1s0
+        dhcp: true
+        dhcpOptions:
+          ipv4: true
+          ipv6: false
+      - interface: enp2s0
+        dhcp: true
+        dhcpOptions:
+          ipv4: true
+          ipv6: false
+  kubelet:
+    nodeIP:
+      validSubnets:
+      - 192.168.1.250/32
+  sysfs:
+    devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
