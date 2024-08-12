@@ -3,6 +3,14 @@ machine:
   - omega
   - 127.0.0.1
   - 192.168.1.251
+  install:
+    disk: /dev/disk/by-id/nvme-Samsung_SSD_980_1TB_S78HNL0X118121M
+    wipe: true
+    bootloader: true
+  disks:
+  - device: /dev/disk/by-id/nvme-Samsung_SSD_980_1TB_S78HNL0X118109T
+    partitions:
+      - mountpoint: /var/lib/longhorn-nvme
   files:
     - content: |
         [metrics]
@@ -10,6 +18,7 @@ machine:
       path: /etc/cri/conf.d/20-customization.part
       op: create
   network:
+    hostname: omega
     interfaces:
       - interface: enp1s0
         dhcp: true

@@ -14,18 +14,13 @@ machine:
   - 127.0.0.1
   - 192.168.1.252
   network:
+    hostname: gamma
     interfaces:
-      - interface: bond0
+      - interface: enp11s0
         dhcp: true
         dhcpOptions:
           ipv4: true
           ipv6: false
-        bond:
-          deviceSelectors:
-          - hardwareAddr: '08:bf:b8:*'
-          - hardwareAddr: 'e4:1d:2d:*'
-          mode: 802.3ad
-          lacpRate: fast
   kubelet:
     nodeIP:
       validSubnets:

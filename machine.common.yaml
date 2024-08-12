@@ -11,18 +11,14 @@ machine:
         - bind
         - rshared
         - rw
-  features:
-    kubernetesTalosAPIAccess:
-      enabled: true
-      allowedRoles:
-      - os:etcd:backup
-      allowedKubernetesNamespaces:
-      - kube-system
   sysctls:
     net.ipv4.ip_forward: "1"
     net.bridge.bridge-nf-call-iptables: "1"
     net.bridge.bridge-nf-call-ip6tables: "1"
     vm.nr_hugepages: "2048"
+  network:
+    nameservers:
+    - 192.168.1.1
 
     # # Machine system disk encryption configuration.
     # systemDiskEncryption:

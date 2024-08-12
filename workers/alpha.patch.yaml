@@ -10,17 +10,13 @@ machine:
       path: /etc/cri/conf.d/20-customization.part
       op: create
   network:
+    hostname: alpha
     interfaces:
-      - interface: bond0
+      - interface: enp10s0
         dhcp: true
         dhcpOptions:
           ipv4: true
           ipv6: false
-        bond:
-          deviceSelectors:
-          - hardwareAddr: 'e4:1d:2d:*'
-          mode: 802.3ad
-          lacpRate: fast
   kubelet:
     nodeIP:
       validSubnets:

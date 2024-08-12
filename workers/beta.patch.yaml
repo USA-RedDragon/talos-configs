@@ -10,17 +10,13 @@ machine:
   - 127.0.0.1
   - 192.168.1.253
   network:
+    hostname: beta
     interfaces:
-      - interface: bond0
+      - interface: enp11s0
         dhcp: true
         dhcpOptions:
           ipv4: true
           ipv6: false
-        bond:
-          deviceSelectors:
-          - hardwareAddr: '24:8a:07:*'
-          mode: 802.3ad
-          lacpRate: fast
   kubelet:
     nodeIP:
       validSubnets:

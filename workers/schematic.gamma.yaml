@@ -7,4 +7,5 @@ customization:
             - siderolabs/iscsi-tools
             - siderolabs/nonfree-kmod-nvidia
             - siderolabs/nvidia-container-toolkit
-            - siderolabs/nut-client
+            # - siderolabs/nut-client
+            # - siderolabs/tailscale
