@@ -1,4 +1,4 @@
-secrets.yaml
+secrets.yaml*
 alpha.yaml
 beta.yaml
 gamma.yaml
@@ -11,3 +11,5 @@ chi.yaml
 worker.yaml
 worker-premachine.yaml
 worker-precluster.yaml
+nut.*.yaml
+tailscale.yaml

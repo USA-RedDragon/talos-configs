@@ -4,5 +4,5 @@ customization:
             - siderolabs/v4l-uvc-drivers
             - siderolabs/util-linux-tools
             - siderolabs/iscsi-tools
-            # - siderolabs/tailscale
-            # - siderolabs/nut-client
+            - siderolabs/tailscale
+            - siderolabs/nut-client
