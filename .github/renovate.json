@@ -26,6 +26,18 @@
             "datasourceTemplate": "docker",
             "depNameTemplate": "ghcr.io/siderolabs/kubelet",
             "versioningTemplate": "semver"
+        },
+        {
+            "customType": "regex",
+            "fileMatch": [
+                ".*"
+            ],
+            "matchStrings": [
+                "ghcr\\.io/usa-reddragon/kubelet:(?<currentValue>.+)"
+            ],
+            "datasourceTemplate": "docker",
+            "depNameTemplate": "ghcr.io/usa-reddragon/kubelet",
+            "versioningTemplate": "semver"
         }
     ],
     "packageRules": [
@@ -36,6 +48,7 @@
             ],
             "matchPackageNames": [
                 "ghcr.io/siderolabs/kubelet",
+                "ghcr.io/usa-reddragon/kubelet",
                 "registry.k8s.io/kube-scheduler",
                 "registry.k8s.io/kube-proxy",
                 "registry.k8s.io/kube-controller-manager",
