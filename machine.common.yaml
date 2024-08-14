@@ -22,6 +22,11 @@ machine:
   network:
     nameservers:
     - 192.168.1.1
+  features:
+    hostDNS:
+      enabled: true
+      forwardKubeDNSToHost: false
+
 
     # # Machine system disk encryption configuration.
     # systemDiskEncryption:

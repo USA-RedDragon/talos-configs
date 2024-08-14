@@ -15,9 +15,6 @@ machine:
       - os:etcd:backup
       allowedKubernetesNamespaces:
       - kube-system
-    hostDNS:
-      enabled: true
-      forwardKubeDNSToHost: false
   kernel:
     modules:
     - name: overlay
@@ -85,9 +82,7 @@ cluster:
         cpu: 100m
         memory: 175Mi
   proxy:
-    image: registry.k8s.io/kube-proxy:v1.31.0
-    extraArgs:
-      metrics-bind-address: '0.0.0.0:10249'
+    disabled: true
   apiServer:
     image: registry.k8s.io/kube-apiserver:v1.31.0
     extraArgs:
