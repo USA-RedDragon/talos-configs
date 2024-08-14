@@ -12,6 +12,8 @@ machine:
         - rshared
         - rw
   install:
+    wipe: false
+    bootloader: true
     extraKernelArgs:
       - security=apparmor
   sysctls:

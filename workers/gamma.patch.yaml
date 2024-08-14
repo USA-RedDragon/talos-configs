@@ -11,8 +11,6 @@ machine:
       op: create
   install:
     disk: /dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W532663J
-    wipe: true
-    bootloader: true
   disks:
   - device: /dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W539291L
     partitions:
