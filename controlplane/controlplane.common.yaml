@@ -15,6 +15,9 @@ machine:
       - os:etcd:backup
       allowedKubernetesNamespaces:
       - kube-system
+    hostDNS:
+      enabled: true
+      forwardKubeDNSToHost: false
   kernel:
     modules:
     - name: overlay
