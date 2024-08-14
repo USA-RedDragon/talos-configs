@@ -6,3 +6,6 @@ cluster:
     - 172.18.0.0/16
     cni:
       name: none
+  proxy:
+    disabled: true
+  clusterName: home
