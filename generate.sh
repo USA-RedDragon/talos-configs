@@ -24,10 +24,24 @@ if [ ! -f secrets.yaml ]; then
     echo -e "${COLOR_RED}Warning: Save your secrets.yaml somewhere safe!${COLOR_CLEAR}" >&2
 fi
 
+# Render cilium
+
+if [[ "$(helm repo list -o json | yq -r '.[] | select(.name == "cilium").url')" != "https://helm.cilium.io/" ]]; then
+    helm repo add cilium https://helm.cilium.io/
+    helm repo update
+fi
+
+# renovate: datasource=github-tags depName=cilium/cilium
+export CILIUM_VERSION=v1.16.1
+
+export CILIUM_YAML="$(helm template cilium cilium/cilium -f cilium-values.yaml --version "${CILIUM_VERSION}" --namespace kube-system)"
+yq -n '.cluster.inlineManifests += [{"name": "cilium", "contents": strenv(CILIUM_YAML)}]' > cilium.yaml
+
 # Use talosctl to generate the node configs
 talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane-premachine.yaml home https://api.k8s.jacob.network:6443
 talosctl machineconfig patch controlplane-premachine.yaml --patch @machine.common.yaml --output controlplane-precluster.yaml
 talosctl machineconfig patch controlplane-precluster.yaml --patch @cluster.common.yaml --output controlplane.yaml
+talosctl machineconfig patch controlplane-precluster.yaml --patch @cilium.yaml --output controlplane.yaml
 rm controlplane-premachine.yaml controlplane-precluster.yaml
 talosctl machineconfig patch controlplane.yaml --patch @./controlplane/chi.patch.yaml --output chi.yaml
 talosctl machineconfig patch controlplane.yaml --patch @./controlplane/psi.patch.yaml --output psi.yaml
@@ -37,6 +51,7 @@ rm controlplane.yaml
 talosctl gen config --with-secrets secrets.yaml --config-patch-worker @./workers/worker.common.yaml --output-types worker --force -o worker-premachine.yaml home https://api.k8s.jacob.network:6443
 talosctl machineconfig patch worker-premachine.yaml --patch @machine.common.yaml --output worker-precluster.yaml
 talosctl machineconfig patch worker-precluster.yaml --patch @cluster.common.yaml --output worker.yaml
+talosctl machineconfig patch worker-precluster.yaml --patch @cilium.yaml --output worker.yaml
 rm worker-premachine.yaml worker-precluster.yaml
 talosctl machineconfig patch worker.yaml --patch @./workers/alpha.patch.yaml --output alpha.yaml
 talosctl machineconfig patch worker.yaml --patch @./workers/beta.patch.yaml --output beta.yaml

@@ -5,4 +5,4 @@ cluster:
     serviceSubnets:
     - 172.18.0.0/16
     cni:
-      name: flannel
+      name: none
