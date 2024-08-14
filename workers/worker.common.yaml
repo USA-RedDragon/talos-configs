@@ -23,14 +23,7 @@ machine:
           - bind
           - rshared
           - rw
-  install:
-    disk: /dev/sda
-    wipe: false
-    bootloader: true
   disks:
-  - device: /dev/sdb
-    partitions:
-      - mountpoint: /var/lib/longhorn-ssd
   - device: /dev/nvme0n1
     partitions:
       - mountpoint: /var/lib/longhorn-nvme-1

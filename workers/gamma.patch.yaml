@@ -9,6 +9,14 @@ machine:
           address = "0.0.0.0:11234"
       path: /etc/cri/conf.d/20-customization.part
       op: create
+  install:
+    disk: /dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W532663J
+    wipe: true
+    bootloader: true
+  disks:
+  - device: /dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W539291L
+    partitions:
+      - mountpoint: /var/lib/longhorn-ssd
   certSANs:
   - gamma
   - 127.0.0.1
