@@ -11,6 +11,12 @@ machine:
   - device: /dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W536715P
     partitions:
       - mountpoint: /var/lib/longhorn-ssd
+  - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S73VNJ0W319634B
+    partitions:
+      - mountpoint: /var/lib/longhorn-nvme-1
+  - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S73VNJ0W319702L
+    partitions:
+      - mountpoint: /var/lib/longhorn-nvme-2
   certSANs:
   - beta
   - 127.0.0.1

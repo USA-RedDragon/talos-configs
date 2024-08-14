@@ -23,13 +23,6 @@ machine:
           - bind
           - rshared
           - rw
-  disks:
-  - device: /dev/nvme0n1
-    partitions:
-      - mountpoint: /var/lib/longhorn-nvme-1
-  - device: /dev/nvme1n1
-    partitions:
-      - mountpoint: /var/lib/longhorn-nvme-2
   kernel:
     modules:
     - name: overlay
