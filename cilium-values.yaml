@@ -52,8 +52,6 @@ image:
 
 priorityClassName: system-node-critical
 
-autoDirectNodeRoutes: true
-
 annotateK8sNode: true
 cgroup:
   autoMount:
