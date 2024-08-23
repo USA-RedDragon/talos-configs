@@ -12,7 +12,7 @@ dnsProxy:
   dnsRejectResponseCode: nameError
 
 cni:
-  exclusive: false
+  exclusive: true
 
 bpf:
   policyMapMax: 32768
