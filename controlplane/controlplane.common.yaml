@@ -81,8 +81,6 @@ cluster:
       requests:
         cpu: 100m
         memory: 175Mi
-  proxy:
-    disabled: true
   apiServer:
     image: registry.k8s.io/kube-apiserver:v1.31.0
     extraArgs:

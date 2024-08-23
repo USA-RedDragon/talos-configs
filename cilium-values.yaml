@@ -24,7 +24,7 @@ global:
 
 policyEnforcementMode: default
 
-kubeProxyReplacement: true
+kubeProxyReplacement: false
 
 securityContext:
   capabilities:
