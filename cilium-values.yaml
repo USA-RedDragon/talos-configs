@@ -8,6 +8,9 @@ ipam:
 operator:
   replicas: 3
 
+externalIPs:
+  enabled: true
+
 dnsProxy:
   dnsRejectResponseCode: nameError
 
