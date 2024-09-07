@@ -102,3 +102,6 @@ hubble:
 
   relay:
     enabled: true
+
+LBIPAM:
+  requireLBClass: true
