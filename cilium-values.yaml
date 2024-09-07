@@ -24,6 +24,13 @@ global:
 
 policyEnforcementMode: default
 
+l2announcements:
+  enabled: true
+
+k8sClientRateLimit:
+  qps: 100
+  burst: 200
+
 kubeProxyReplacement: true
 
 securityContext:
