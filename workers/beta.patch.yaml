@@ -1,10 +1,6 @@
 machine:
   files:
     - content: |
-        [plugins]
-          [plugins."io.containerd.grpc.v1.cri"]
-            [plugins."io.containerd.grpc.v1.cri".containerd]
-              default_runtime_name = "nvidia"
         [metrics]
           address = "0.0.0.0:11234"
       path: /etc/cri/conf.d/20-customization.part
@@ -37,6 +33,8 @@ machine:
     nodeIP:
       validSubnets:
       - 192.168.1.253/32
+  sysctls:
+    net.core.bpf_jit_harden: 1
   kernel:
     modules:
     - name: nvidia
