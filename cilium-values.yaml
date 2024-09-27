@@ -8,6 +8,10 @@ ipam:
 operator:
   replicas: 3
 
+# Needed for pod-to-pod Wireguard connections
+socketLB:
+  hostNamespaceOnly: true
+
 externalIPs:
   enabled: true
 
