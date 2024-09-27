@@ -35,7 +35,7 @@ if [[ "$(helm repo list -o json | yq -r '.[] | select(.name == "cilium").url')" 
 fi
 
 # renovate: datasource=github-tags depName=cilium/cilium
-export CILIUM_VERSION=v1.16.1
+export CILIUM_VERSION=v1.16.2
 
 export CILIUM_YAML="$(helm template cilium cilium/cilium -f cilium-values.yaml --version "${CILIUM_VERSION}" --kube-version "${K8S_VERSION}" --namespace kube-system)"
 yq -n '.cluster.inlineManifests += [{"name": "cilium", "contents": strenv(CILIUM_YAML)}]' > cilium.yaml
