@@ -35,12 +35,6 @@ machine:
       - 192.168.1.253/32
   sysctls:
     net.core.bpf_jit_harden: 1
-  kernel:
-    modules:
-    - name: nvidia
-    - name: nvidia_uvm
-    - name: nvidia_drm
-    - name: nvidia_modeset
   sysfs:
     devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
