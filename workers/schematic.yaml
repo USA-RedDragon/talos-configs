@@ -6,3 +6,4 @@ customization:
             - siderolabs/iscsi-tools
             - siderolabs/tailscale
             - siderolabs/nut-client
+            - siderolabs/gasket-driver

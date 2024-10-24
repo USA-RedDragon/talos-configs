@@ -9,3 +9,4 @@ customization:
             - siderolabs/nvidia-container-toolkit
             - siderolabs/nut-client
             - siderolabs/tailscale
+            - siderolabs/gasket-driver
