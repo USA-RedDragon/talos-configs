@@ -12,7 +12,7 @@ COLOR_CLEAR='\033[0m'
 TALOS_VERSION=v1.8.0
 
 # Clear any old generated files
-rm -rf alpha.yaml beta.yaml gamma.yaml chi.yaml psi.yaml omega.yaml controlplane.yaml controlplane-premachine.yaml controlplane-precluster.yaml worker.yaml worker-premachine.yaml worker-precluster.yaml nut.worker.yaml nut.controlplane.yaml tailscale.yaml alpha.yaml.tmp beta.yaml.tmp gamma.yaml.tmp chi.yaml.tmp psi.yaml.tmp omega.yaml.tmp
+rm -rf alpha.yaml beta.yaml gamma.yaml delta.yaml chi.yaml psi.yaml omega.yaml controlplane.yaml controlplane-premachine.yaml controlplane-precluster.yaml worker.yaml worker-premachine.yaml worker-precluster.yaml nut.worker.yaml nut.controlplane.yaml tailscale.yaml alpha.yaml.tmp beta.yaml.tmp gamma.yaml.tmp chi.yaml.tmp psi.yaml.tmp omega.yaml.tmp
 
 # If secrets.yaml doesn't exist, create it
 if [ ! -f secrets.yaml ]; then
@@ -31,8 +31,8 @@ K8S_VERSION="$(kubectl version -o yaml | yq -r '.serverVersion.gitVersion')"
 
 if [[ "$(helm repo list -o json | yq -r '.[] | select(.name == "cilium").url')" != "https://helm.cilium.io/" ]]; then
     helm repo add cilium https://helm.cilium.io/
-    helm repo update
 fi
+helm repo update
 
 # renovate: datasource=github-tags depName=cilium/cilium
 export CILIUM_VERSION=v1.16.3
@@ -59,6 +59,7 @@ rm worker-premachine.yaml worker-precluster.yaml worker-precilium.yaml
 talosctl machineconfig patch worker.yaml --patch @./workers/alpha.patch.yaml --output alpha.yaml
 talosctl machineconfig patch worker.yaml --patch @./workers/beta.patch.yaml --output beta.yaml
 talosctl machineconfig patch worker.yaml --patch @./workers/gamma.patch.yaml --output gamma.yaml
+talosctl machineconfig patch worker.yaml --patch @./workers/delta.patch.yaml --output delta.yaml
 
 rm worker.yaml
 
@@ -71,6 +72,7 @@ GAMMA_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./workers/schematic.gamma
 INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' alpha.yaml
 INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' beta.yaml
 GAMMA_INSTALLER_IMAGE="factory.talos.dev/installer/${GAMMA_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(GAMMA_INSTALLER_IMAGE)' gamma.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' delta.yaml
 INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' omega.yaml
 INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' psi.yaml
 INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' chi.yaml
@@ -85,6 +87,9 @@ cat beta.yaml nut.worker.yaml tailscale.yaml > beta.yaml.tmp
 mv beta.yaml.tmp beta.yaml
 cat gamma.yaml nut.worker.yaml tailscale.yaml > gamma.yaml.tmp
 mv gamma.yaml.tmp gamma.yaml
+# Delta is physically on the same UPS as control plane nodes
+cat delta.yaml nut.controlplane.yaml tailscale.yaml > delta.yaml.tmp
+mv delta.yaml.tmp delta.yaml
 cat chi.yaml nut.controlplane.yaml tailscale.yaml > chi.yaml.tmp
 mv chi.yaml.tmp chi.yaml
 cat psi.yaml nut.controlplane.yaml tailscale.yaml > psi.yaml.tmp

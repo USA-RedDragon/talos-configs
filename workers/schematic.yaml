@@ -1,6 +1,9 @@
 customization:
     systemExtensions:
         officialExtensions:
+            - siderolabs/amd-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/i915-ucode
             - siderolabs/v4l-uvc-drivers
             - siderolabs/util-linux-tools
             - siderolabs/iscsi-tools
