@@ -35,7 +35,7 @@ fi
 helm repo update
 
 # renovate: datasource=github-tags depName=cilium/cilium
-export CILIUM_VERSION=v1.16.3
+export CILIUM_VERSION=v1.16.4
 
 export CILIUM_YAML="$(helm template cilium cilium/cilium -f cilium-values.yaml --version "${CILIUM_VERSION}" --kube-version "${K8S_VERSION}" --namespace kube-system)"
 yq -n '.cluster.inlineManifests += [{"name": "cilium", "contents": strenv(CILIUM_YAML)}]' > cilium.yaml
