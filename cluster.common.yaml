@@ -7,7 +7,6 @@ cluster:
     cni:
       name: none
   proxy:
-    disabled: true
     image: registry.k8s.io/kube-proxy:v1.31.0
     extraArgs:
       metrics-bind-address: '0.0.0.0:10249'
