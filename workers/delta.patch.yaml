@@ -6,7 +6,11 @@ machine:
       path: /etc/cri/conf.d/20-customization.part
       op: create
   install:
-    disk: /dev/disk/by-id/ata-VICKTER_SSD_000000000950
+    disk: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S73WNU0XA30890H
+  disks:
+  - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S73WNU0XA30896Z
+    partitions:
+      - mountpoint: /var/lib/longhorn-nvme-1
   certSANs:
   - delta
   - 127.0.0.1
@@ -14,12 +18,12 @@ machine:
   network:
     hostname: delta
     interfaces:
-      - interface: enp2s0
+      - interface: enp9s0f0
         dhcp: true
         dhcpOptions:
           ipv4: true
           ipv6: false
-      - interface: enp3s0
+      - interface: enp9s0f1
         dhcp: true
         dhcpOptions:
           ipv4: true
@@ -30,8 +34,26 @@ machine:
       - 192.168.1.248/32
   sysctls:
     net.core.bpf_jit_harden: 1
+  kernel:
+    modules:
+    - name: nvidia
+    - name: nvidia_uvm
+    - name: nvidia_drm
+    - name: nvidia_modeset
   sysfs:
     devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu4.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu5.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu6.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu7.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu8.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu12.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu13.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
