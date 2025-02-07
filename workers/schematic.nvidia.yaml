@@ -5,8 +5,10 @@ customization:
             - siderolabs/util-linux-tools
             - siderolabs/amd-ucode
             - siderolabs/iscsi-tools
-            - siderolabs/nonfree-kmod-nvidia
-            - siderolabs/nvidia-container-toolkit
+            # 1060 isn't supported by the open gpu kernel module
+            # - siderolabs/nvidia-open-gpu-kernel-modules-production
+            - siderolabs/nonfree-kmod-nvidia-production
+            - siderolabs/nvidia-container-toolkit-production
             - siderolabs/nut-client
             - siderolabs/tailscale
             - siderolabs/gasket-driver
