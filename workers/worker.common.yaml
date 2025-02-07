@@ -30,5 +30,4 @@ machine:
     - name: iptable_raw
     - name: ip6_tables
     - name: mlx4_en
-    - name: amdgpu
     - name: uvcvideo
