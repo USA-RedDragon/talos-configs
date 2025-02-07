@@ -1,6 +1,6 @@
 machine:
   kubelet:
-    image: ghcr.io/usa-reddragon/kubelet:v1.31.0
+    image: ghcr.io/usa-reddragon/kubelet:v1.32.1
     extraArgs:
       allowed-unsafe-sysctls: net.ipv4.conf.all.src_valid_mark
     extraMounts:
