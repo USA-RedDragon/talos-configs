@@ -33,6 +33,7 @@ machine:
     nodeIP:
       validSubnets:
       - 192.168.1.253/32
+      - fdeb:abba:237c::/48
   sysctls:
     net.core.bpf_jit_harden: 1
   sysfs:

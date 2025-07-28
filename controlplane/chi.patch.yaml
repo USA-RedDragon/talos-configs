@@ -34,6 +34,7 @@ machine:
     nodeIP:
       validSubnets:
       - 192.168.1.249/32
+      - fdeb:abba:237c::/48
   sysfs:
     devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
