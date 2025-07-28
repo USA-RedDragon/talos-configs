@@ -2,8 +2,10 @@ cluster:
   network:
     podSubnets:
     - 172.17.0.0/16
+    - fdeb:abba:237c:fefe:0::/96
     serviceSubnets:
     - 172.18.0.0/16
+    - fdeb:abba:237c:fefe:1::/112
     cni:
       name: none
   proxy:
