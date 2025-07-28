@@ -9,5 +9,4 @@ customization:
             - siderolabs/intel-ucode
             - siderolabs/iscsi-tools
             - siderolabs/nut-client
-            - siderolabs/tailscale
             - siderolabs/gasket-driver

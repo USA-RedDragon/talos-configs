@@ -9,10 +9,10 @@ COLOR_YELLOW='\033[0;33m'
 COLOR_CLEAR='\033[0m'
 
 # renovate: datasource=github-releases depName=siderolabs/talos
-TALOS_VERSION=v1.10.5
+TALOS_VERSION=v1.9.5
 
 # Clear any old generated files
-rm -rf alpha.yaml beta.yaml gamma.yaml delta.yaml chi.yaml psi.yaml omega.yaml controlplane.yaml controlplane-premachine.yaml controlplane-precluster.yaml worker.yaml worker-premachine.yaml worker-precluster.yaml nut.worker.yaml nut.controlplane.yaml tailscale.yaml alpha.yaml.tmp beta.yaml.tmp gamma.yaml.tmp chi.yaml.tmp psi.yaml.tmp omega.yaml.tmp
+rm -rf alpha.yaml beta.yaml gamma.yaml delta.yaml chi.yaml psi.yaml omega.yaml controlplane.yaml controlplane-premachine.yaml controlplane-precluster.yaml worker.yaml worker-premachine.yaml worker-precluster.yaml nut.worker.yaml nut.controlplane.yaml alpha.yaml.tmp beta.yaml.tmp gamma.yaml.tmp chi.yaml.tmp psi.yaml.tmp omega.yaml.tmp
 
 # If secrets.yaml doesn't exist, create it
 if [ ! -f secrets.yaml ]; then
@@ -20,7 +20,6 @@ if [ ! -f secrets.yaml ]; then
     talosctl gen secrets
     yq -i '.nut.user = "k8s"' secrets.yaml
     yq -i ".nut.pass = \"$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 64; echo)\"" secrets.yaml
-    yq -i '.tailscale.auth = "CHANGEME"' secrets.yaml
     echo -e "${COLOR_RED}Warning: Save your secrets.yaml somewhere safe!${COLOR_CLEAR}" >&2
 fi
 
@@ -61,20 +60,19 @@ INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" y
 
 UPS_USER="$(cat secrets.yaml | yq -r .nut.user)" UPS_PASS="$(cat secrets.yaml | yq -r .nut.pass)" UPS_HOST="192.168.1.39" envsubst < nut.yaml.tpl > nut.worker.yaml
 UPS_USER="$(cat secrets.yaml | yq -r .nut.user)" UPS_PASS="$(cat secrets.yaml | yq -r .nut.pass)" UPS_HOST="192.168.1.19" envsubst < nut.yaml.tpl > nut.controlplane.yaml
-TS_AUTHKEY="$(cat secrets.yaml | yq -r .tailscale.auth)" envsubst < tailscale.yaml.tpl > tailscale.yaml
 
-cat alpha.yaml nut.worker.yaml tailscale.yaml > alpha.yaml.tmp
+cat alpha.yaml nut.worker.yaml > alpha.yaml.tmp
 mv alpha.yaml.tmp alpha.yaml
-cat beta.yaml nut.worker.yaml tailscale.yaml > beta.yaml.tmp
+cat beta.yaml nut.worker.yaml > beta.yaml.tmp
 mv beta.yaml.tmp beta.yaml
-cat gamma.yaml nut.worker.yaml tailscale.yaml > gamma.yaml.tmp
+cat gamma.yaml nut.worker.yaml > gamma.yaml.tmp
 mv gamma.yaml.tmp gamma.yaml
 # Delta is physically on the same UPS as control plane nodes
-cat delta.yaml nut.controlplane.yaml tailscale.yaml > delta.yaml.tmp
+cat delta.yaml nut.controlplane.yaml > delta.yaml.tmp
 mv delta.yaml.tmp delta.yaml
-cat chi.yaml nut.controlplane.yaml tailscale.yaml > chi.yaml.tmp
+cat chi.yaml nut.controlplane.yaml > chi.yaml.tmp
 mv chi.yaml.tmp chi.yaml
-cat psi.yaml nut.controlplane.yaml tailscale.yaml > psi.yaml.tmp
+cat psi.yaml nut.controlplane.yaml > psi.yaml.tmp
 mv psi.yaml.tmp psi.yaml
-cat omega.yaml nut.controlplane.yaml tailscale.yaml > omega.yaml.tmp
+cat omega.yaml nut.controlplane.yaml > omega.yaml.tmp
 mv omega.yaml.tmp omega.yaml

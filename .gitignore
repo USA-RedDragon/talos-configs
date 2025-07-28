@@ -13,5 +13,4 @@ worker.yaml
 worker-premachine.yaml
 worker-precluster.yaml
 nut.*.yaml
-tailscale.yaml
 cilium.yaml
