@@ -1,13 +1,17 @@
 customization:
     systemExtensions:
         officialExtensions:
+            - siderolabs/amd-ucode
+            - siderolabs/amdgpu
+            - siderolabs/intel-ucode
+            - siderolabs/i915
+            - siderolabs/i915-ucode
             - siderolabs/v4l-uvc-drivers
             - siderolabs/util-linux-tools
-            - siderolabs/amd-ucode
             - siderolabs/iscsi-tools
+            - siderolabs/nut-client
+            - siderolabs/gasket-driver
             # 1060 isn't supported by the open gpu kernel module
             # - siderolabs/nvidia-open-gpu-kernel-modules-production
             - siderolabs/nonfree-kmod-nvidia-production
             - siderolabs/nvidia-container-toolkit-production
-            - siderolabs/nut-client
-            - siderolabs/gasket-driver
