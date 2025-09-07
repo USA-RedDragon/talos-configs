@@ -29,6 +29,8 @@ machine:
         dhcpOptions:
           ipv4: true
           ipv6: false
+  sysctls:
+    net.core.bpf_jit_harden: 1
   kubelet:
     nodeIP:
       validSubnets:
