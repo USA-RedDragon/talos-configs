@@ -41,6 +41,7 @@ talosctl machineconfig patch worker.yaml --patch @./workers/alpha.patch.yaml --o
 talosctl machineconfig patch worker.yaml --patch @./workers/beta.patch.yaml --output beta.yaml
 talosctl machineconfig patch worker.yaml --patch @./workers/gamma.patch.yaml --output gamma.yaml
 talosctl machineconfig patch worker.yaml --patch @./workers/delta.patch.yaml --output delta.yaml
+talosctl machineconfig patch worker.yaml --patch @./workers/epsilon.patch.yaml --output epsilon.yaml
 
 rm worker.yaml
 
@@ -54,6 +55,7 @@ INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERS
 INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' beta.yaml
 GAMMA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(GAMMA_INSTALLER_IMAGE)' gamma.yaml
 DELTA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(DELTA_INSTALLER_IMAGE)' delta.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' epsilon.yaml
 INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' omega.yaml
 INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' psi.yaml
 INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' chi.yaml
@@ -67,9 +69,11 @@ cat beta.yaml nut.worker.yaml > beta.yaml.tmp
 mv beta.yaml.tmp beta.yaml
 cat gamma.yaml nut.worker.yaml > gamma.yaml.tmp
 mv gamma.yaml.tmp gamma.yaml
-# Delta is physically on the same UPS as control plane nodes
+# Delta and Epsilon are physically on the same UPS as control plane nodes
 cat delta.yaml nut.controlplane.yaml > delta.yaml.tmp
 mv delta.yaml.tmp delta.yaml
+cat epsilon.yaml nut.controlplane.yaml > epsilon.yaml.tmp
+mv epsilon.yaml.tmp epsilon.yaml
 cat chi.yaml nut.controlplane.yaml > chi.yaml.tmp
 mv chi.yaml.tmp chi.yaml
 cat psi.yaml nut.controlplane.yaml > psi.yaml.tmp

@@ -3,6 +3,7 @@ alpha.yaml
 beta.yaml
 gamma.yaml
 delta.yaml
+epsilon.yaml
 controlplane.yaml
 controlplane-premachine.yaml
 controlplane-precluster.yaml

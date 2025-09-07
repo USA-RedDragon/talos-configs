@@ -1,0 +1,48 @@
+machine:
+  certSANs:
+  - epsilon
+  - 127.0.0.1
+  - 192.168.1.247
+  files:
+    - content: |
+        [metrics]
+          address = "0.0.0.0:11234"
+      path: /etc/cri/conf.d/20-customization.part
+      op: create
+  install:
+    disk: /dev/disk/by-id/nvme-WD_BLACK_SN850X_1000GB_23235A801267
+  network:
+    hostname: epsilon
+    interfaces:
+      - interface: enp193s0f3u2
+        dhcp: true
+        dhcpOptions:
+          ipv4: true
+          ipv6: false
+  sysctls:
+    net.core.bpf_jit_harden: 1
+  kubelet:
+    nodeIP:
+      validSubnets:
+      - 192.168.1.247/32
+      - fdeb:abba:237c::/48
+  sysfs:
+    devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu4.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu5.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu6.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu7.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu8.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu12.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu13.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
+    devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
+  kernel:
+    modules:
+    - name: amdgpu
