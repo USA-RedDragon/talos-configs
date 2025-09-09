@@ -75,7 +75,7 @@ cluster:
     resources:
       requests:
         cpu: 100m
-        memory: 100Mi
+        memory: 200Mi
   controllerManager:
     image: registry.k8s.io/kube-controller-manager:v1.34.0
     extraArgs:
@@ -84,7 +84,7 @@ cluster:
     resources:
       requests:
         cpu: 100m
-        memory: 175Mi
+        memory: 700Mi
   apiServer:
     image: registry.k8s.io/kube-apiserver:v1.34.0
     extraArgs:
@@ -104,7 +104,7 @@ cluster:
     resources:
       requests:
         cpu: 1000m
-        memory: 3Gi
+        memory: 7Gi
     admissionControl:
     - name: PodSecurity
       configuration:
