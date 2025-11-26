@@ -22,7 +22,7 @@
                 ".*"
             ],
             "matchStrings": [
-                "ghcr\\.io/usa-reddragon/kubelet:(?<currentValue>.+)"
+                "ghcr\\.io/usa-reddragon/kubelet:v(?<currentValue>.+)"
             ],
             "datasourceTemplate": "docker",
             "depNameTemplate": "ghcr.io/usa-reddragon/kubelet",
