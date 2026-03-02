@@ -34,8 +34,6 @@ machine:
       validSubnets:
       - 192.168.1.252/32
       - fdeb:abba:237c::/48
-  sysctls:
-    net.core.bpf_jit_harden: 1
   kernel:
     modules:
     - name: nvidia
