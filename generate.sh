@@ -12,7 +12,7 @@ COLOR_CLEAR='\033[0m'
 TALOS_VERSION=v1.11.5
 
 # Clear any old generated files
-rm -rf alpha.yaml beta.yaml gamma.yaml delta.yaml chi.yaml psi.yaml omega.yaml controlplane.yaml controlplane-premachine.yaml controlplane-precluster.yaml worker.yaml worker-premachine.yaml worker-precluster.yaml nut.worker.yaml nut.controlplane.yaml alpha.yaml.tmp beta.yaml.tmp gamma.yaml.tmp chi.yaml.tmp psi.yaml.tmp omega.yaml.tmp chi.patch.yaml.tmp psi.patch.yaml.tmp omega.patch.yaml.tmp
+rm -rf alpha.yaml beta.yaml gamma.yaml delta.yaml chi.yaml psi.yaml omega.yaml controlplane.yaml controlplane-premachine.yaml controlplane-precluster.yaml worker.yaml worker-premachine.yaml worker-precluster.yaml nut.worker.yaml nut.controlplane.yaml alpha.yaml.tmp beta.yaml.tmp gamma.yaml.tmp chi.yaml.tmp psi.yaml.tmp omega.yaml.tmp
 
 # If secrets.yaml doesn't exist, create it
 if [ ! -f secrets.yaml ]; then
@@ -23,45 +23,14 @@ if [ ! -f secrets.yaml ]; then
     echo -e "${COLOR_RED}Warning: Save your secrets.yaml somewhere safe!${COLOR_CLEAR}" >&2
 fi
 
-# Generate WireGuard keypairs if not yet present in secrets.yaml
-if [ "$(yq -r '.wg.chi.privateKey // "REPLACEME"' secrets.yaml)" = "REPLACEME" ]; then
-    echo -e "${COLOR_YELLOW}Note: ${COLOR_CLEAR}${COLOR_GREEN}Generating WireGuard keypairs...${COLOR_CLEAR}" >&2
-    for node in chi psi omega spot1 spot2 spot3 spot4 spot5; do
-        WG_PRIV="$(wg genkey)"
-        WG_PUB="$(echo "$WG_PRIV" | wg pubkey)"
-        yq -i ".wg.${node}.privateKey = \"${WG_PRIV}\"" secrets.yaml
-        yq -i ".wg.${node}.publicKey = \"${WG_PUB}\"" secrets.yaml
-    done
-fi
-
 # Use talosctl to generate the node configs
 talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane-premachine.yaml home https://api.k8s.jacob.network:6443
 talosctl machineconfig patch controlplane-premachine.yaml --patch @machine.common.yaml --output controlplane-precluster.yaml
 talosctl machineconfig patch controlplane-precluster.yaml --patch @cluster.common.yaml --output controlplane.yaml
 rm controlplane-premachine.yaml controlplane-precluster.yaml
-
-# Load WireGuard keys from secrets.yaml for envsubst
-export CHI_WG_PRIVATE_KEY="$(yq -r .wg.chi.privateKey secrets.yaml)"
-export PSI_WG_PRIVATE_KEY="$(yq -r .wg.psi.privateKey secrets.yaml)"
-export OMEGA_WG_PRIVATE_KEY="$(yq -r .wg.omega.privateKey secrets.yaml)"
-export CHI_WG_PUBLIC_KEY="$(yq -r .wg.chi.publicKey secrets.yaml)"
-export PSI_WG_PUBLIC_KEY="$(yq -r .wg.psi.publicKey secrets.yaml)"
-export OMEGA_WG_PUBLIC_KEY="$(yq -r .wg.omega.publicKey secrets.yaml)"
-export SPOT_1_WG_PUBLIC_KEY="$(yq -r .wg.spot1.publicKey secrets.yaml)"
-export SPOT_2_WG_PUBLIC_KEY="$(yq -r .wg.spot2.publicKey secrets.yaml)"
-export SPOT_3_WG_PUBLIC_KEY="$(yq -r .wg.spot3.publicKey secrets.yaml)"
-export SPOT_4_WG_PUBLIC_KEY="$(yq -r .wg.spot4.publicKey secrets.yaml)"
-export SPOT_5_WG_PUBLIC_KEY="$(yq -r .wg.spot5.publicKey secrets.yaml)"
-
-# Process CP patch templates through envsubst before applying
-envsubst < ./controlplane/chi.patch.yaml > chi.patch.yaml.tmp
-envsubst < ./controlplane/psi.patch.yaml > psi.patch.yaml.tmp
-envsubst < ./controlplane/omega.patch.yaml > omega.patch.yaml.tmp
-
-talosctl machineconfig patch controlplane.yaml --patch @chi.patch.yaml.tmp --output chi.yaml
-talosctl machineconfig patch controlplane.yaml --patch @psi.patch.yaml.tmp --output psi.yaml
-talosctl machineconfig patch controlplane.yaml --patch @omega.patch.yaml.tmp --output omega.yaml
-rm chi.patch.yaml.tmp psi.patch.yaml.tmp omega.patch.yaml.tmp
+talosctl machineconfig patch controlplane.yaml --patch @./controlplane/chi.patch.yaml --output chi.yaml
+talosctl machineconfig patch controlplane.yaml --patch @./controlplane/psi.patch.yaml --output psi.yaml
+talosctl machineconfig patch controlplane.yaml --patch @./controlplane/omega.patch.yaml --output omega.yaml
 rm controlplane.yaml
 
 talosctl gen config --with-secrets secrets.yaml --config-patch-worker @./workers/worker.common.yaml --output-types worker --force -o worker-premachine.yaml home https://api.k8s.jacob.network:6443

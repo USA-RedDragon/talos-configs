@@ -30,37 +30,6 @@ machine:
         dhcpOptions:
           ipv4: true
           ipv6: false
-      - interface: wg0
-        mtu: 1420
-        addresses:
-          - 10.55.12.3/24
-        wireguard:
-          privateKey: ${OMEGA_WG_PRIVATE_KEY}
-          listenPort: 51821
-          peers:
-            - publicKey: ${CHI_WG_PUBLIC_KEY}
-              endpoint: 192.168.1.249:51821
-              allowedIPs:
-                - 10.55.12.1/32
-            - publicKey: ${PSI_WG_PUBLIC_KEY}
-              endpoint: 192.168.1.250:51821
-              allowedIPs:
-                - 10.55.12.2/32
-            - publicKey: ${SPOT_1_WG_PUBLIC_KEY}
-              allowedIPs:
-                - 10.55.12.10/32
-            - publicKey: ${SPOT_2_WG_PUBLIC_KEY}
-              allowedIPs:
-                - 10.55.12.11/32
-            - publicKey: ${SPOT_3_WG_PUBLIC_KEY}
-              allowedIPs:
-                - 10.55.12.12/32
-            - publicKey: ${SPOT_4_WG_PUBLIC_KEY}
-              allowedIPs:
-                - 10.55.12.13/32
-            - publicKey: ${SPOT_5_WG_PUBLIC_KEY}
-              allowedIPs:
-                - 10.55.12.14/32
   kubelet:
     nodeIP:
       validSubnets:
