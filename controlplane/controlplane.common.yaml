@@ -86,7 +86,7 @@ cluster:
         cpu: 100m
         memory: 700Mi
   apiServer:
-    image: registry.k8s.io/kube-apiserver:v1.35.3@sha256:6c6e2571f98e738015a39ed21305ab4166a3e2873f9cc01d7fa58371cf0f5d30
+    image: registry.k8s.io/kube-apiserver:v1.35.4@sha256:06b4bb208634a107ab9e6c50cdb9df178d05166a700c0cc448d59522091074b5
     extraArgs:
       oidc-client-id: YR6w7D1wpv6QTsbCFEEMdDjsiDP2V6O8GlB9Zakb
       oidc-username-claim: email
