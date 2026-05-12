@@ -54,7 +54,7 @@ cluster:
       quota-backend-bytes: 4294967296 # 4 GiB
   allowSchedulingOnControlPlanes: false
   scheduler:
-    image: registry.k8s.io/kube-scheduler:v1.36.0@sha256:00b57dfadc2e99fe85481f56ea15f391d5447ebc3ac243896f0e7afd869ef60e
+    image: registry.k8s.io/kube-scheduler:v1.36.1@sha256:3a4333e8ba6e1f74c9bc467c791a06a26808474e8819582cf130cfe0fddc3155
     extraArgs:
       bind-address: '0.0.0.0'
     config:
@@ -77,7 +77,7 @@ cluster:
         cpu: 100m
         memory: 200Mi
   controllerManager:
-    image: registry.k8s.io/kube-controller-manager:v1.36.0@sha256:886b5c5623206b7bddf0303484cf632e3f5514a20ef1a1b685f38634b42531dd
+    image: registry.k8s.io/kube-controller-manager:v1.36.1@sha256:c8adb8daee5b30576bd87638a89351ab8388b3fda466bedb7eacf10cde77dbe7
     extraArgs:
       bind-address: '0.0.0.0'
       node-cidr-mask-size-ipv6: "112"
@@ -86,7 +86,7 @@ cluster:
         cpu: 100m
         memory: 700Mi
   apiServer:
-    image: registry.k8s.io/kube-apiserver:v1.36.0@sha256:4ae8c24a97630f8cfc9eed02fb95e2371d172bb231915e83d27f6ea0e64fa297
+    image: registry.k8s.io/kube-apiserver:v1.36.1@sha256:2460df74307cafacf674573c88df511aeb1aece9daa7fbd968fe27cb1c8c4588
     extraArgs:
       oidc-client-id: YR6w7D1wpv6QTsbCFEEMdDjsiDP2V6O8GlB9Zakb
       oidc-username-claim: email
