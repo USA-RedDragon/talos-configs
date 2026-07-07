@@ -5,7 +5,6 @@ customization:
             - siderolabs/amdgpu
             - siderolabs/intel-ucode
             - siderolabs/i915
-            - siderolabs/i915-ucode
             - siderolabs/v4l-uvc-drivers
             - siderolabs/util-linux-tools
             - siderolabs/iscsi-tools
