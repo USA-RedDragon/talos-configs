@@ -50,3 +50,5 @@ machine:
   kernel:
     modules:
     - name: xe
+    - name: mei
+    - name: mei_gsc
