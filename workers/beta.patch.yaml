@@ -49,4 +49,4 @@ machine:
     devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
   kernel:
     modules:
-    - name: i915
+    - name: xe
