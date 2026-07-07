@@ -11,14 +11,6 @@ machine:
       op: create
   install:
     disk: /dev/disk/by-id/nvme-WD_BLACK_SN850X_1000GB_23235A801267
-  network:
-    hostname: epsilon
-    interfaces:
-      - interface: enp193s0f3u2
-        dhcp: true
-        dhcpOptions:
-          ipv4: true
-          ipv6: false
   kubelet:
     nodeIP:
       validSubnets:
@@ -44,3 +36,17 @@ machine:
   kernel:
     modules:
     - name: amdgpu
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: epsilon
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: net0
+selector:
+  match: mac(link.permanent_addr) == "9c:bf:0d:00:82:54"
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: net0

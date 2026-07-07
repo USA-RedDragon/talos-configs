@@ -21,14 +21,6 @@ machine:
   - gamma
   - 127.0.0.1
   - 192.168.1.252
-  network:
-    hostname: gamma
-    interfaces:
-      - interface: enp11s0
-        dhcp: true
-        dhcpOptions:
-          ipv4: true
-          ipv6: false
   kubelet:
     nodeIP:
       validSubnets:
@@ -59,3 +51,17 @@ machine:
     devices.system.cpu.cpu13.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: gamma
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: net0
+selector:
+  match: mac(link.permanent_addr) == "e4:1d:2d:50:fb:10"
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: net0

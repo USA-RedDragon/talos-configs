@@ -21,14 +21,6 @@ machine:
   - beta
   - 127.0.0.1
   - 192.168.1.253
-  network:
-    hostname: beta
-    interfaces:
-      - interface: enp11s0
-        dhcp: true
-        dhcpOptions:
-          ipv4: true
-          ipv6: false
   kubelet:
     nodeIP:
       validSubnets:
@@ -49,6 +41,20 @@ machine:
     devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
   kernel:
     modules:
-    - name: xe
+    - name: i915
     - name: mei
     - name: mei_gsc
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: beta
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: net0
+selector:
+  match: mac(link.permanent_addr) == "24:8a:07:db:35:20"
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: net0

@@ -9,7 +9,7 @@ COLOR_YELLOW='\033[0;33m'
 COLOR_CLEAR='\033[0m'
 
 # renovate: datasource=github-releases depName=siderolabs/talos
-TALOS_VERSION=v1.13.5
+TALOS_VERSION=v1.12.9
 
 # Clear any old generated files
 rm -rf alpha.yaml beta.yaml gamma.yaml delta.yaml chi.yaml psi.yaml omega.yaml controlplane.yaml controlplane-premachine.yaml controlplane-precluster.yaml worker.yaml worker-premachine.yaml worker-precluster.yaml nut.worker.yaml nut.controlplane.yaml alpha.yaml.tmp beta.yaml.tmp gamma.yaml.tmp chi.yaml.tmp psi.yaml.tmp omega.yaml.tmp
@@ -25,6 +25,10 @@ fi
 
 # Use talosctl to generate the node configs
 talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane-premachine.yaml home https://api.k8s.jacob.network:6443
+# Talos 1.12 gen config emits a default `HostnameConfig: auto: stable` document.
+# Drop it so each node's static HostnameConfig (in its patch) applies without an
+# "'auto' and 'hostname' cannot be set at the same time" conflict.
+yq -i 'del(select(.kind == "HostnameConfig"))' controlplane-premachine.yaml
 talosctl machineconfig patch controlplane-premachine.yaml --patch @machine.common.yaml --output controlplane-precluster.yaml
 talosctl machineconfig patch controlplane-precluster.yaml --patch @cluster.common.yaml --output controlplane.yaml
 rm controlplane-premachine.yaml controlplane-precluster.yaml
@@ -34,6 +38,8 @@ talosctl machineconfig patch controlplane.yaml --patch @./controlplane/omega.pat
 rm controlplane.yaml
 
 talosctl gen config --with-secrets secrets.yaml --config-patch-worker @./workers/worker.common.yaml --output-types worker --force -o worker-premachine.yaml home https://api.k8s.jacob.network:6443
+# See control-plane note above: drop the default auto HostnameConfig document.
+yq -i 'del(select(.kind == "HostnameConfig"))' worker-premachine.yaml
 talosctl machineconfig patch worker-premachine.yaml --patch @machine.common.yaml --output worker-precluster.yaml
 talosctl machineconfig patch worker-precluster.yaml --patch @cluster.common.yaml --output worker.yaml
 rm worker-premachine.yaml worker-precluster.yaml
@@ -51,14 +57,14 @@ WORKER_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./workers/schematic.yaml
 NVIDIA_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./workers/schematic.nvidia.yaml https://factory.talos.dev/schematics | jq -r .id)
 
 # Use yq to set the installer image ID in the node configs
-INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' alpha.yaml
-INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' beta.yaml
-GAMMA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(GAMMA_INSTALLER_IMAGE)' gamma.yaml
-DELTA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(DELTA_INSTALLER_IMAGE)' delta.yaml
-INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' epsilon.yaml
-INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' omega.yaml
-INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' psi.yaml
-INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i '.machine.install.image = strenv(INSTALLER_IMAGE)' chi.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' alpha.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' beta.yaml
+GAMMA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(GAMMA_INSTALLER_IMAGE))' gamma.yaml
+DELTA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(DELTA_INSTALLER_IMAGE))' delta.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' epsilon.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' omega.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' psi.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' chi.yaml
 
 UPS_USER="$(cat secrets.yaml | yq -r .nut.user)" UPS_PASS="$(cat secrets.yaml | yq -r .nut.pass)" UPS_HOST="192.168.1.39" envsubst < nut.yaml.tpl > nut.worker.yaml
 UPS_USER="$(cat secrets.yaml | yq -r .nut.user)" UPS_PASS="$(cat secrets.yaml | yq -r .nut.pass)" UPS_HOST="192.168.1.19" envsubst < nut.yaml.tpl > nut.controlplane.yaml

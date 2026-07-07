@@ -15,19 +15,6 @@ machine:
   - delta
   - 127.0.0.1
   - 192.168.1.248
-  network:
-    hostname: delta
-    interfaces:
-      - interface: enp9s0f0
-        dhcp: true
-        dhcpOptions:
-          ipv4: true
-          ipv6: false
-      - interface: enp9s0f1
-        dhcp: true
-        dhcpOptions:
-          ipv4: true
-          ipv6: false
   kubelet:
     nodeIP:
       validSubnets:
@@ -58,3 +45,27 @@ machine:
     devices.system.cpu.cpu13.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: delta
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: net0
+selector:
+  match: mac(link.permanent_addr) == "b8:59:9f:8d:7a:80"
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: net1
+selector:
+  match: mac(link.permanent_addr) == "b8:59:9f:8d:7a:81"
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: net0
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: net1

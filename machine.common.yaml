@@ -15,6 +15,7 @@ machine:
   install:
     wipe: false
     bootloader: true
+    grubUseUKICmdline: false
     extraKernelArgs:
       - security=apparmor
   sysctls:
@@ -28,9 +29,6 @@ machine:
     net.ipv4.tcp_wmem: "4096 1048576 16777216"
     net.ipv4.tcp_rmem: "4096 1048576 16777216"
     net.core.bpf_jit_harden: 1
-  network:
-    nameservers:
-    - 192.168.1.1
   features:
     hostDNS:
       enabled: false
@@ -62,3 +60,8 @@ machine:
     #         # options:
     #         #     - no_read_workqueue
     #         #     - no_write_workqueue
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+nameservers:
+  - address: 192.168.1.1
