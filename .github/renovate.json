@@ -43,6 +43,13 @@
                 "registry.k8s.io/kube-controller-manager",
                 "registry.k8s.io/kube-apiserver"
             ]
+        },
+        {
+            "matchUpdateTypes": [
+                "major",
+                "minor"
+            ],
+            "automerge": false
         }
     ]
 }
