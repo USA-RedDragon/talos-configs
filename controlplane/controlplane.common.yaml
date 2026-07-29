@@ -90,6 +90,8 @@ cluster:
       oidc-username-claim: email
       oidc-groups-claim: groups
       oidc-issuer-url: https://authentik.mcswain.dev/application/o/kubernetes-api-server/
+      service-account-issuer: https://k8s-oidc.mcswain.dev
+      service-account-jwks-uri: https://k8s-oidc.mcswain.dev/openid/v1/jwks
     certSANs:
     - api.k8s.jacob.network
     - chi.k8s.jacob.network
