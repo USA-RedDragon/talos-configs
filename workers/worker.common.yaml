@@ -27,7 +27,5 @@ machine:
     modules:
     - name: overlay
     - name: br_netfilter
-    - name: iptable_raw
-    - name: ip6_tables
     - name: mlx4_en
     - name: uvcvideo

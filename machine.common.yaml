@@ -15,7 +15,6 @@ machine:
   install:
     wipe: false
     bootloader: true
-    grubUseUKICmdline: false
     extraKernelArgs:
       - security=apparmor
   sysctls:

@@ -19,8 +19,6 @@ machine:
     modules:
     - name: overlay
     - name: br_netfilter
-    - name: iptable_raw
-    - name: ip6_tables
     - name: uvcvideo
 
     # # Machine system disk encryption configuration.
