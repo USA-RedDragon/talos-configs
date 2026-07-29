@@ -10,7 +10,7 @@ cluster:
       name: none
   proxy:
     disabled: true
-    image: registry.k8s.io/kube-proxy:v1.31.0
+    image: registry.k8s.io/kube-proxy:v1.34.2
     extraArgs:
       metrics-bind-address: '0.0.0.0:10249'
   clusterName: home
