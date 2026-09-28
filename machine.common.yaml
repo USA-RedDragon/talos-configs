@@ -32,6 +32,12 @@ machine:
     hostDNS:
       enabled: false
       forwardKubeDNSToHost: false
+  # Talos service logs go to the node-local Vector (talos-logs in
+  # home-cluster-flux), bound to 127.0.0.1, which pushes to Loki.
+  logging:
+    destinations:
+      - endpoint: udp://127.0.0.1:6050/
+        format: json_lines
 
 
     # # Machine system disk encryption configuration.
@@ -64,3 +70,8 @@ apiVersion: v1alpha1
 kind: ResolverConfig
 nameservers:
   - address: 192.168.1.1
+---
+apiVersion: v1alpha1
+kind: KmsgLogConfig
+name: loki
+url: udp://127.0.0.1:6051/
