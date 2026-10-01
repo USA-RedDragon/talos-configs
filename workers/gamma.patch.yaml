@@ -51,6 +51,12 @@ machine:
     devices.system.cpu.cpu13.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
+    class.scsi_host.host0.link_power_management_policy: max_performance
+    class.scsi_host.host1.link_power_management_policy: max_performance
+    class.scsi_host.host2.link_power_management_policy: max_performance
+    class.scsi_host.host3.link_power_management_policy: max_performance
+    class.scsi_host.host4.link_power_management_policy: max_performance
+    class.scsi_host.host5.link_power_management_policy: max_performance
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig

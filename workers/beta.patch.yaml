@@ -39,6 +39,12 @@ machine:
     devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
+    class.scsi_host.host0.link_power_management_policy: max_performance
+    class.scsi_host.host1.link_power_management_policy: max_performance
+    class.scsi_host.host2.link_power_management_policy: max_performance
+    class.scsi_host.host3.link_power_management_policy: max_performance
+    class.scsi_host.host4.link_power_management_policy: max_performance
+    class.scsi_host.host5.link_power_management_policy: max_performance
   kernel:
     modules:
     - name: i915
