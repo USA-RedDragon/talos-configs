@@ -3,12 +3,6 @@ machine:
   - alpha
   - 127.0.0.1
   - 192.168.1.254
-  files:
-    - content: |
-        [metrics]
-          address = "0.0.0.0:11234"
-      path: /etc/cri/conf.d/20-customization.part
-      op: create
   install:
     disk: /dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W536720T
   disks:

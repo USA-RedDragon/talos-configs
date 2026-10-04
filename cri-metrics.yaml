@@ -1,0 +1,7 @@
+---
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: metrics
+content: |
+  [metrics]
+    address = "0.0.0.0:11234"

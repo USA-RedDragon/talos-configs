@@ -3,12 +3,6 @@ machine:
   - epsilon
   - 127.0.0.1
   - 192.168.1.247
-  files:
-    - content: |
-        [metrics]
-          address = "0.0.0.0:11234"
-      path: /etc/cri/conf.d/20-customization.part
-      op: create
   install:
     disk: /dev/disk/by-id/nvme-WD_BLACK_SN850X_1000GB_23235A801267
   kubelet:

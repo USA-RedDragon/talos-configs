@@ -11,12 +11,6 @@ machine:
   - device: /dev/disk/by-id/nvme-Samsung_SSD_980_1TB_S78HNL0X201241F
     partitions:
       - mountpoint: /var/lib/longhorn-nvme
-  files:
-    - content: |
-        [metrics]
-          address = "0.0.0.0:11234"
-      path: /etc/cri/conf.d/20-customization.part
-      op: create
   kubelet:
     nodeIP:
       validSubnets:
