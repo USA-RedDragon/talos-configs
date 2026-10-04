@@ -15,8 +15,6 @@ machine:
   install:
     wipe: false
     bootloader: true
-    extraKernelArgs:
-      - security=apparmor
   sysctls:
     net.ipv4.ip_forward: "1"
     net.bridge.bridge-nf-call-iptables: "1"
