@@ -9,7 +9,7 @@ COLOR_YELLOW='\033[0;33m'
 COLOR_CLEAR='\033[0m'
 
 # renovate: datasource=github-releases depName=siderolabs/talos
-TALOS_VERSION=v1.12.9
+TALOS_VERSION=v1.13.11
 
 # Clear any old generated files
 rm -rf alpha.yaml beta.yaml gamma.yaml delta.yaml chi.yaml psi.yaml omega.yaml controlplane.yaml controlplane-premachine.yaml controlplane-precluster.yaml worker.yaml worker-premachine.yaml worker-precluster.yaml nut.worker.yaml nut.controlplane.yaml alpha.yaml.tmp beta.yaml.tmp gamma.yaml.tmp chi.yaml.tmp psi.yaml.tmp omega.yaml.tmp
@@ -24,7 +24,7 @@ if [ ! -f secrets.yaml ]; then
 fi
 
 # Use talosctl to generate the node configs
-talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane-premachine.yaml home https://api.k8s.jacob.network:6443
+talosctl gen config --talos-version v1.13 --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane-premachine.yaml home https://api.k8s.jacob.network:6443
 # Talos 1.12 gen config emits a default `HostnameConfig: auto: stable` document.
 # Drop it so each node's static HostnameConfig (in its patch) applies without an
 # "'auto' and 'hostname' cannot be set at the same time" conflict.
@@ -37,7 +37,7 @@ talosctl machineconfig patch controlplane.yaml --patch @./controlplane/psi.patch
 talosctl machineconfig patch controlplane.yaml --patch @./controlplane/omega.patch.yaml --output omega.yaml
 rm controlplane.yaml
 
-talosctl gen config --with-secrets secrets.yaml --config-patch-worker @./workers/worker.common.yaml --output-types worker --force -o worker-premachine.yaml home https://api.k8s.jacob.network:6443
+talosctl gen config --talos-version v1.13 --with-secrets secrets.yaml --config-patch-worker @./workers/worker.common.yaml --output-types worker --force -o worker-premachine.yaml home https://api.k8s.jacob.network:6443
 # See control-plane note above: drop the default auto HostnameConfig document.
 yq -i 'del(select(.kind == "HostnameConfig"))' worker-premachine.yaml
 talosctl machineconfig patch worker-premachine.yaml --patch @machine.common.yaml --output worker-precluster.yaml
