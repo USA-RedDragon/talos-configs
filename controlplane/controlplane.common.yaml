@@ -13,6 +13,7 @@ machine:
       enabled: true
       allowedRoles:
       - os:etcd:backup
+      - os:operator # etcd defrag CronJob (home-cluster-flux services/kube-system/etcd-defrag.yaml)
       allowedKubernetesNamespaces:
       - kube-system
   kernel:
