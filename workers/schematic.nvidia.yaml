@@ -12,5 +12,6 @@ customization:
             - siderolabs/gasket-driver
             # 1060 isn't supported by the open gpu kernel module
             # - siderolabs/nvidia-open-gpu-kernel-modules-production
-            - siderolabs/nonfree-kmod-nvidia-production
-            - siderolabs/nvidia-container-toolkit-production
+            # LTS (580): the last driver branch supporting both the RTX 2070 and the 1060 (production 590+ drops Pascal); >= 580 runs CUDA 13.x
+            - siderolabs/nonfree-kmod-nvidia-lts
+            - siderolabs/nvidia-container-toolkit-lts
