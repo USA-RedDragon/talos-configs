@@ -26,6 +26,10 @@ machine:
       validSubnets:
       - 192.168.1.253/32
       - fdeb:abba:237c::/48
+  sysctls:
+    # The Arc GPU doesn't survive a kexec reboot (hung on the 1.13 upgrade);
+    # reboot through firmware instead.
+    kernel.kexec_load_disabled: "1"
   sysfs:
     devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
     devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
