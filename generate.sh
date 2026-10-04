@@ -89,3 +89,19 @@ cat psi.yaml nut.controlplane.yaml > psi.yaml.tmp
 mv psi.yaml.tmp psi.yaml
 cat omega.yaml nut.controlplane.yaml > omega.yaml.tmp
 mv omega.yaml.tmp omega.yaml
+
+# Pull through zot (jacob.pub); containerd falls back to upstream when it's down.
+ZOT_USER="$(cat secrets.yaml | yq -r .zot.user)" ZOT_PASS="$(cat secrets.yaml | yq -r .zot.pass)" envsubst < registry.yaml.tpl > registry.yaml
+for node in alpha beta gamma delta epsilon chi psi omega; do
+    cat ${node}.yaml registry.yaml > ${node}.yaml.tmp
+    mv ${node}.yaml.tmp ${node}.yaml
+done
+rm registry.yaml
+
+TALOS_MINOR=$(echo "${TALOS_VERSION}" | cut -d. -f2)
+if [ "${TALOS_MINOR}" -ge 14 ]; then
+    for node in alpha beta gamma delta epsilon chi psi omega; do
+        cat ${node}.yaml filesystem-trim.yaml > ${node}.yaml.tmp
+        mv ${node}.yaml.tmp ${node}.yaml
+    done
+fi

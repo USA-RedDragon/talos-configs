@@ -14,4 +14,4 @@ worker.yaml
 worker-premachine.yaml
 worker-precluster.yaml
 nut.*.yaml
-cilium.yaml
+cilium.yamlregistry.yaml

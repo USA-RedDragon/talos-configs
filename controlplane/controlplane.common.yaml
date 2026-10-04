@@ -48,8 +48,11 @@ machine:
     #         #     - no_write_workqueue
 cluster:
   etcd:
+    advertisedSubnets:
+      - 192.168.1.0/24
     extraArgs:
       quota-backend-bytes: 4294967296 # 4 GiB
+      listen-metrics-urls: http://0.0.0.0:2381
   allowSchedulingOnControlPlanes: false
   scheduler:
     image: registry.k8s.io/kube-scheduler:v1.34.2
