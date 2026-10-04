@@ -1,16 +1,12 @@
-cluster:
-  network:
-    podSubnets:
-    - 172.17.0.0/16
-    - fdeb:abba:237c:fefe:0::/96
-    serviceSubnets:
-    - 172.18.0.0/16
-    - fdeb:ffff:237c::/108
-    cni:
-      name: none
-  proxy:
-    disabled: true
-    image: registry.k8s.io/kube-proxy:v1.37.1
-    extraArgs:
-      metrics-bind-address: '0.0.0.0:10249'
-  clusterName: home
+apiVersion: v1alpha1
+kind: KubeNetworkConfig
+dnsDomain: cluster.local
+podSubnets:
+- 172.17.0.0/16
+- fdeb:abba:237c:fefe:0::/96
+serviceSubnets:
+- 172.18.0.0/16
+- fdeb:ffff:237c::/108
+# The default /64 is wider than the /96 IPv6 pod subnet (validation rejects it);
+# this renders kube-controller-manager's --node-cidr-mask-size-ipv6=112.
+nodeCIDRMaskSizeIPv6: 112

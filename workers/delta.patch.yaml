@@ -1,44 +1,63 @@
 machine:
-  install:
-    disk: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S73WNU0XA30890H
-  disks:
-  - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S73WNU0XA30896Z
-    partitions:
-      - mountpoint: /var/lib/longhorn-nvme-1
   certSANs:
   - delta
   - 127.0.0.1
   - 192.168.1.248
-  kubelet:
-    nodeIP:
-      validSubnets:
-      - 192.168.1.248/32
-      - fdeb:abba:237c::/48
-  kernel:
-    modules:
-    - name: nvidia
-      parameters:
-        - NVreg_OpenRmEnableUnsupportedGpus=1
-    - name: nvidia_uvm
-    - name: nvidia_drm
-    - name: nvidia_modeset
-  sysfs:
-    devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu4.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu5.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu6.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu7.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu8.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu12.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu13.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
+  disks:
+  - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S73WNU0XA30896Z
+    partitions:
+    - mountpoint: /var/lib/longhorn-nvme-1
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: '"/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S73WNU0XA30890H" in disk.symlinks'
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+nodeIP:
+  validSubnets:
+  - 192.168.1.248/32
+  - fdeb:abba:237c::/48
+---
+apiVersion: v1alpha1
+kind: SysfsConfig
+params:
+  devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu4.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu5.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu6.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu7.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu8.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu12.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu13.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nvidia
+parameters:
+- NVreg_OpenRmEnableUnsupportedGpus=1
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nvidia_uvm
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nvidia_drm
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nvidia_modeset
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig

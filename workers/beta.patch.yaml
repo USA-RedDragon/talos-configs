@@ -1,53 +1,72 @@
 machine:
-  install:
-    disk: /dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W532667V
-  disks:
-  - device: /dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W536715P
-    partitions:
-      - mountpoint: /var/lib/longhorn-ssd
-  - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S73VNJ0W319634B
-    partitions:
-      - mountpoint: /var/lib/longhorn-nvme-1
-  - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S73VNJ0W319702L
-    partitions:
-      - mountpoint: /var/lib/longhorn-nvme-2
   certSANs:
   - beta
   - 127.0.0.1
   - 192.168.1.253
-  kubelet:
-    nodeIP:
-      validSubnets:
-      - 192.168.1.253/32
-      - fdeb:abba:237c::/48
-  sysctls:
-    # The Arc GPU doesn't survive a kexec reboot (hung on the 1.13 upgrade);
-    # reboot through firmware instead.
-    kernel.kexec_load_disabled: "1"
-  sysfs:
-    devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu4.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu5.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu6.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu7.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu8.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
-    class.scsi_host.host0.link_power_management_policy: max_performance
-    class.scsi_host.host1.link_power_management_policy: max_performance
-    class.scsi_host.host2.link_power_management_policy: max_performance
-    class.scsi_host.host3.link_power_management_policy: max_performance
-    class.scsi_host.host4.link_power_management_policy: max_performance
-    class.scsi_host.host5.link_power_management_policy: max_performance
-  kernel:
-    modules:
-    - name: i915
-    - name: mei
-    - name: mei_gsc
+  disks:
+  - device: /dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W536715P
+    partitions:
+    - mountpoint: /var/lib/longhorn-ssd
+  - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S73VNJ0W319634B
+    partitions:
+    - mountpoint: /var/lib/longhorn-nvme-1
+  - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S73VNJ0W319702L
+    partitions:
+    - mountpoint: /var/lib/longhorn-nvme-2
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: '"/dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W532667V" in disk.symlinks'
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+nodeIP:
+  validSubnets:
+  - 192.168.1.253/32
+  - fdeb:abba:237c::/48
+---
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  # The Arc GPU doesn't survive a kexec reboot (hung on the 1.13 upgrade);
+  # reboot through firmware instead.
+  kernel.kexec_load_disabled: '1'
+---
+apiVersion: v1alpha1
+kind: SysfsConfig
+params:
+  devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu4.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu5.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu6.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu7.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu8.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
+  class.scsi_host.host0.link_power_management_policy: max_performance
+  class.scsi_host.host1.link_power_management_policy: max_performance
+  class.scsi_host.host2.link_power_management_policy: max_performance
+  class.scsi_host.host3.link_power_management_policy: max_performance
+  class.scsi_host.host4.link_power_management_policy: max_performance
+  class.scsi_host.host5.link_power_management_policy: max_performance
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: i915
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: mei
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: mei_gsc
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig

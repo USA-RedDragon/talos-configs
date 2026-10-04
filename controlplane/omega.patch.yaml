@@ -3,24 +3,32 @@ machine:
   - omega
   - 127.0.0.1
   - 192.168.1.251
-  install:
-    disk: /dev/disk/by-id/nvme-Samsung_SSD_980_1TB_S78HNL0X118121M
-    wipe: true
-    bootloader: true
   disks:
   - device: /dev/disk/by-id/nvme-Samsung_SSD_980_1TB_S78HNL0X118109T
     partitions:
-      - mountpoint: /var/lib/longhorn-nvme
-  kubelet:
-    nodeIP:
-      validSubnets:
-      - 192.168.1.251/32
-      - fdeb:abba:237c::/48
-  sysfs:
-    devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
+    - mountpoint: /var/lib/longhorn-nvme
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: '"/dev/disk/by-id/nvme-Samsung_SSD_980_1TB_S78HNL0X118121M" in disk.symlinks'
+  wipe: true
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+nodeIP:
+  validSubnets:
+  - 192.168.1.251/32
+  - fdeb:abba:237c::/48
+---
+apiVersion: v1alpha1
+kind: SysfsConfig
+params:
+  devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig

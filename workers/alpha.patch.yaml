@@ -3,45 +3,55 @@ machine:
   - alpha
   - 127.0.0.1
   - 192.168.1.254
-  install:
-    disk: /dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W536720T
   disks:
   - device: /dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W535172P
     partitions:
-      - mountpoint: /var/lib/longhorn-ssd
+    - mountpoint: /var/lib/longhorn-ssd
   - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S73VNJ0W319629W
     partitions:
-      - mountpoint: /var/lib/longhorn-nvme-1
+    - mountpoint: /var/lib/longhorn-nvme-1
   - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S73VNJ0W504482A
     partitions:
-      - mountpoint: /var/lib/longhorn-nvme-2
-  kubelet:
-    nodeIP:
-      validSubnets:
-      - 192.168.1.254/32
-      - fdeb:abba:237c::/48
-  sysfs:
-    devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu4.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu5.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu6.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu7.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu8.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
-    devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
-    class.scsi_host.host0.link_power_management_policy: max_performance
-    class.scsi_host.host1.link_power_management_policy: max_performance
-    class.scsi_host.host2.link_power_management_policy: max_performance
-    class.scsi_host.host3.link_power_management_policy: max_performance
-    class.scsi_host.host4.link_power_management_policy: max_performance
-    class.scsi_host.host5.link_power_management_policy: max_performance
-  kernel:
-    modules:
-    - name: amdgpu
+    - mountpoint: /var/lib/longhorn-nvme-2
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: '"/dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75BNS0W536720T" in disk.symlinks'
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+nodeIP:
+  validSubnets:
+  - 192.168.1.254/32
+  - fdeb:abba:237c::/48
+---
+apiVersion: v1alpha1
+kind: SysfsConfig
+params:
+  devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu1.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu2.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu3.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu4.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu5.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu6.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu7.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu8.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu9.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu10.cpufreq.scaling_governor: performance
+  devices.system.cpu.cpu11.cpufreq.scaling_governor: performance
+  class.scsi_host.host0.link_power_management_policy: max_performance
+  class.scsi_host.host1.link_power_management_policy: max_performance
+  class.scsi_host.host2.link_power_management_policy: max_performance
+  class.scsi_host.host3.link_power_management_policy: max_performance
+  class.scsi_host.host4.link_power_management_policy: max_performance
+  class.scsi_host.host5.link_power_management_policy: max_performance
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: amdgpu
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig

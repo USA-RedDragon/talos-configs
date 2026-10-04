@@ -23,13 +23,21 @@ if [ ! -f secrets.yaml ]; then
     echo -e "${COLOR_RED}Warning: Save your secrets.yaml somewhere safe!${COLOR_CLEAR}" >&2
 fi
 
-# Use talosctl to generate the node configs
-talosctl gen config --talos-version v1.13 --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane-premachine.yaml home https://api.k8s.jacob.network:6443
-# Talos 1.12 gen config emits a default `HostnameConfig: auto: stable` document.
+# Use talosctl to generate the node configs.
+# No --talos-version pin: gen config emits the Talos 1.14 multi-document format
+# (Kube*Config, UnattendedInstallConfig, DiscoveryIdentityConfig, ...). Note that
+# it also emits `SecurityProfileConfig: workloadIsolation: true`; security-profile.yaml
+# is merged into that same document (one per node).
+talosctl gen config --with-secrets secrets.yaml --config-patch-control-plane @./controlplane/controlplane.common.yaml --output-types controlplane --force -o controlplane-premachine.yaml home https://api.k8s.jacob.network:6443
+# gen config (1.12+) emits a default `HostnameConfig: auto: stable` document.
 # Drop it so each node's static HostnameConfig (in its patch) applies without an
 # "'auto' and 'hostname' cannot be set at the same time" conflict.
 yq -i 'del(select(.kind == "HostnameConfig"))' controlplane-premachine.yaml
-talosctl machineconfig patch controlplane-premachine.yaml --patch @machine.common.yaml --output controlplane-precluster.yaml
+# The legacy .cluster.secretboxEncryptionSecret rendered [secretbox, identity];
+# the default KubeEtcdEncryptionConfig (carrying the same secretbox key from
+# secrets.yaml) has only secretbox. Keep the identity fallback for reads.
+yq -i 'with(select(.kind == "KubeEtcdEncryptionConfig"); .config.resources[0].providers += [{"identity": {}}])' controlplane-premachine.yaml
+talosctl machineconfig patch controlplane-premachine.yaml --patch @machine.common.yaml --patch @filesystem-trim.yaml --patch @cri-metrics.yaml --patch @security-profile.yaml --output controlplane-precluster.yaml
 talosctl machineconfig patch controlplane-precluster.yaml --patch @cluster.common.yaml --output controlplane.yaml
 rm controlplane-premachine.yaml controlplane-precluster.yaml
 talosctl machineconfig patch controlplane.yaml --patch @./controlplane/chi.patch.yaml --output chi.yaml
@@ -37,10 +45,10 @@ talosctl machineconfig patch controlplane.yaml --patch @./controlplane/psi.patch
 talosctl machineconfig patch controlplane.yaml --patch @./controlplane/omega.patch.yaml --output omega.yaml
 rm controlplane.yaml
 
-talosctl gen config --talos-version v1.13 --with-secrets secrets.yaml --config-patch-worker @./workers/worker.common.yaml --output-types worker --force -o worker-premachine.yaml home https://api.k8s.jacob.network:6443
+talosctl gen config --with-secrets secrets.yaml --config-patch-worker @./workers/worker.common.yaml --output-types worker --force -o worker-premachine.yaml home https://api.k8s.jacob.network:6443
 # See control-plane note above: drop the default auto HostnameConfig document.
 yq -i 'del(select(.kind == "HostnameConfig"))' worker-premachine.yaml
-talosctl machineconfig patch worker-premachine.yaml --patch @machine.common.yaml --output worker-precluster.yaml
+talosctl machineconfig patch worker-premachine.yaml --patch @machine.common.yaml --patch @filesystem-trim.yaml --patch @cri-metrics.yaml --patch @security-profile.yaml --output worker-precluster.yaml
 talosctl machineconfig patch worker-precluster.yaml --patch @cluster.common.yaml --output worker.yaml
 rm worker-premachine.yaml worker-precluster.yaml
 talosctl machineconfig patch worker.yaml --patch @./workers/alpha.patch.yaml --output alpha.yaml
@@ -56,15 +64,15 @@ INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./controlplane/schematic.yaml h
 WORKER_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./workers/schematic.yaml https://factory.talos.dev/schematics | jq -r .id)
 NVIDIA_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./workers/schematic.nvidia.yaml https://factory.talos.dev/schematics | jq -r .id)
 
-# Use yq to set the installer image ID in the node configs
-INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' alpha.yaml
-INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' beta.yaml
-GAMMA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(GAMMA_INSTALLER_IMAGE))' gamma.yaml
-DELTA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(DELTA_INSTALLER_IMAGE))' delta.yaml
-INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' epsilon.yaml
-INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' omega.yaml
-INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' psi.yaml
-INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.machine != null); .machine.install.image = strenv(INSTALLER_IMAGE))' chi.yaml
+# Use yq to set the installer image ID in the node configs (UnattendedInstallConfig)
+INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' alpha.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' beta.yaml
+GAMMA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(GAMMA_INSTALLER_IMAGE))' gamma.yaml
+DELTA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(DELTA_INSTALLER_IMAGE))' delta.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' epsilon.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' omega.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' psi.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' chi.yaml
 
 # UPS_HOST is upsmon's MONITOR system, so it must be upsname@host; a bare IP
 # is read as a UPS name on localhost. The worker UPS (alpha, beta, gamma, the
@@ -97,11 +105,3 @@ for node in alpha beta gamma delta epsilon chi psi omega; do
     mv ${node}.yaml.tmp ${node}.yaml
 done
 rm registry.yaml
-
-TALOS_MINOR=$(echo "${TALOS_VERSION}" | cut -d. -f2)
-if [ "${TALOS_MINOR}" -ge 14 ]; then
-    for node in alpha beta gamma delta epsilon chi psi omega; do
-        cat ${node}.yaml filesystem-trim.yaml cri-metrics.yaml security-profile.yaml > ${node}.yaml.tmp
-        mv ${node}.yaml.tmp ${node}.yaml
-    done
-fi

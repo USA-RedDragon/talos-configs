@@ -8,19 +8,6 @@ machine:
           - bind
           - rshared
           - rw
-  features:
-    kubernetesTalosAPIAccess:
-      enabled: true
-      allowedRoles:
-      - os:etcd:backup
-      - os:operator # etcd defrag CronJob (home-cluster-flux services/kube-system/etcd-defrag.yaml)
-      allowedKubernetesNamespaces:
-      - kube-system
-  kernel:
-    modules:
-    - name: overlay
-    - name: br_netfilter
-    - name: uvcvideo
 
     # # Machine system disk encryption configuration.
     # systemDiskEncryption:
@@ -32,11 +19,11 @@ machine:
     #             - # Deterministically generated key from the node UUID and PartitionLabel.
     #               nodeID: {}
     #               slot: 0 # Key slot number for LUKS2 encryption.
-    #               
+    #
     #               # # KMS managed encryption key.
     #               # kms:
     #               #     endpoint: https://192.168.88.21:4443 # KMS endpoint to Seal/Unseal the key.
-    #         
+    #
     #         # # Cipher kind to use for the encryption. Depends on the encryption provider.
     #         # cipher: aes-xts-plain64
 
@@ -48,84 +35,178 @@ machine:
     #         #     - no_read_workqueue
     #         #     - no_write_workqueue
 cluster:
+  # etcd has no multi-document replacement yet; it stays in v1alpha1.
   etcd:
     advertisedSubnets:
       - 192.168.1.0/24
     extraArgs:
       quota-backend-bytes: 4294967296 # 4 GiB
       listen-metrics-urls: http://0.0.0.0:2381
-  allowSchedulingOnControlPlanes: false
-  scheduler:
-    image: registry.k8s.io/kube-scheduler:v1.37.1
-    extraArgs:
-      bind-address: '0.0.0.0'
-    config:
-      apiVersion: kubescheduler.config.k8s.io/v1
-      kind: KubeSchedulerConfiguration
-      clientConnection:
-        kubeconfig: /system/secrets/kubernetes/kube-scheduler/kubeconfig
-      profiles:
-        - schedulerName: default-scheduler
-          pluginConfig:
-            - name: PodTopologySpread
-              args:
-                defaultConstraints:
-                  - maxSkew: 1
-                    topologyKey: kubernetes.io/hostname
-                    whenUnsatisfiable: ScheduleAnyway
-                defaultingType: List
-    resources:
-      requests:
-        cpu: 100m
-        memory: 200Mi
-  controllerManager:
-    image: registry.k8s.io/kube-controller-manager:v1.37.1
-    extraArgs:
-      bind-address: '0.0.0.0'
-      node-cidr-mask-size-ipv6: "112"
-    resources:
-      requests:
-        cpu: 100m
-        memory: 700Mi
-  apiServer:
-    image: registry.k8s.io/kube-apiserver:v1.37.1
-    extraArgs:
-      oidc-client-id: YR6w7D1wpv6QTsbCFEEMdDjsiDP2V6O8GlB9Zakb
-      oidc-username-claim: email
-      oidc-groups-claim: groups
-      oidc-issuer-url: https://authentik.mcswain.dev/application/o/kubernetes-api-server/
-      service-account-issuer: https://k8s-oidc.mcswain.dev
-      service-account-jwks-uri: https://k8s-oidc.mcswain.dev/openid/v1/jwks
-    certSANs:
-    - api.k8s.jacob.network
-    - chi.k8s.jacob.network
-    - psi.k8s.jacob.network
-    - omega.k8s.jacob.network
-    - 192.168.1.251
-    - 192.168.1.250
-    - 192.168.1.249
-    - 127.0.0.1
-    resources:
-      requests:
-        cpu: 1000m
-        memory: 7Gi
-    admissionControl:
-    - name: PodSecurity
-      configuration:
-        apiVersion: pod-security.admission.config.k8s.io/v1alpha1
-        defaults:
-            audit: baseline
-            audit-version: latest
-            enforce: privileged
-            enforce-version: latest
-            warn: baseline
-            warn-version: latest
-        kind: PodSecurityConfiguration
-    - name: NamespaceLifecycle
-    - name: LimitRanger
-    - name: ServiceAccount
-    - name: DefaultStorageClass
-    - name: DefaultTolerationSeconds
-    - name: MutatingAdmissionWebhook
-    - name: ValidatingAdmissionWebhook
-    - name: ResourceQuota
+---
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+- os:etcd:backup
+- os:operator # etcd defrag CronJob (home-cluster-flux services/kube-system/etcd-defrag.yaml)
+allowedKubernetesNamespaces:
+- kube-system
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: overlay
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: br_netfilter
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: uvcvideo
+---
+# cni: none -- no CNI document means Talos deploys no CNI.
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
+---
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+image: registry.k8s.io/kube-proxy:v1.37.1
+extraArgs:
+  metrics-bind-address: '0.0.0.0:10249'
+---
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+image: registry.k8s.io/kube-scheduler:v1.37.1
+extraArgs:
+  bind-address: '0.0.0.0'
+config:
+  apiVersion: kubescheduler.config.k8s.io/v1
+  kind: KubeSchedulerConfiguration
+  clientConnection:
+    kubeconfig: /system/secrets/kubernetes/kube-scheduler/kubeconfig
+  profiles:
+    - schedulerName: default-scheduler
+      pluginConfig:
+        - name: PodTopologySpread
+          args:
+            defaultConstraints:
+              - maxSkew: 1
+                topologyKey: kubernetes.io/hostname
+                whenUnsatisfiable: ScheduleAnyway
+            defaultingType: List
+resources:
+  requests:
+    cpu: 100m
+    memory: 200Mi
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+image: registry.k8s.io/kube-controller-manager:v1.37.1
+# node-cidr-mask-size-ipv6 comes from KubeNetworkConfig.nodeCIDRMaskSizeIPv6.
+extraArgs:
+  bind-address: '0.0.0.0'
+resources:
+  requests:
+    cpu: 100m
+    memory: 700Mi
+---
+apiVersion: v1alpha1
+kind: KubeAPIServerConfig
+image: registry.k8s.io/kube-apiserver:v1.37.1
+# OIDC moved to KubeAuthenticationConfig: --oidc-* flags are rejected here.
+extraArgs:
+  service-account-issuer: https://k8s-oidc.mcswain.dev
+  service-account-jwks-uri: https://k8s-oidc.mcswain.dev/openid/v1/jwks
+certExtraSANs:
+- api.k8s.jacob.network
+- chi.k8s.jacob.network
+- psi.k8s.jacob.network
+- omega.k8s.jacob.network
+- 192.168.1.251
+- 192.168.1.250
+- 192.168.1.249
+- 127.0.0.1
+resources:
+  requests:
+    cpu: 1000m
+    memory: 7Gi
+# The legacy .cluster.apiServer path never added startup probes; keep it that way.
+startupProbes: false
+---
+# Replaces --oidc-* flags and --anonymous-auth=false (the legacy path's default).
+# Note: the --oidc-signing-algs default (RS256) has no equivalent here; all
+# RFC 7518 asymmetric algorithms are accepted.
+apiVersion: v1alpha1
+kind: KubeAuthenticationConfig
+configuration:
+  anonymous:
+    enabled: false
+  jwt:
+  - issuer:
+      url: https://authentik.mcswain.dev/application/o/kubernetes-api-server/
+      audiences:
+      - YR6w7D1wpv6QTsbCFEEMdDjsiDP2V6O8GlB9Zakb
+    claimMappings:
+      username:
+        claim: email
+        prefix: ""
+      groups:
+        claim: groups
+        prefix: ""
+---
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: PodSecurity
+configuration:
+  apiVersion: pod-security.admission.config.k8s.io/v1alpha1
+  kind: PodSecurityConfiguration
+  defaults:
+    audit: baseline
+    audit-version: latest
+    enforce: privileged
+    enforce-version: latest
+    warn: baseline
+    warn-version: latest
+  # exemptions (namespaces: [kube-system]) come from the gen config default;
+  # this patch is merged into it, as it was in .cluster.apiServer.admissionControl.
+---
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: NamespaceLifecycle
+configuration: {}
+---
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: LimitRanger
+configuration: {}
+---
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: ServiceAccount
+configuration: {}
+---
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: DefaultStorageClass
+configuration: {}
+---
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: DefaultTolerationSeconds
+configuration: {}
+---
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: MutatingAdmissionWebhook
+configuration: {}
+---
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: ValidatingAdmissionWebhook
+configuration: {}
+---
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: ResourceQuota
+configuration: {}

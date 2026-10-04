@@ -23,9 +23,19 @@ machine:
           - bind
           - rshared
           - rw
-  kernel:
-    modules:
-    - name: overlay
-    - name: br_netfilter
-    - name: mlx4_en
-    - name: uvcvideo
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: overlay
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: br_netfilter
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: mlx4_en
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: uvcvideo
