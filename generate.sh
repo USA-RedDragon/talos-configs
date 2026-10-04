@@ -101,7 +101,7 @@ rm registry.yaml
 TALOS_MINOR=$(echo "${TALOS_VERSION}" | cut -d. -f2)
 if [ "${TALOS_MINOR}" -ge 14 ]; then
     for node in alpha beta gamma delta epsilon chi psi omega; do
-        cat ${node}.yaml filesystem-trim.yaml cri-metrics.yaml > ${node}.yaml.tmp
+        cat ${node}.yaml filesystem-trim.yaml cri-metrics.yaml security-profile.yaml > ${node}.yaml.tmp
         mv ${node}.yaml.tmp ${node}.yaml
     done
 fi

@@ -1,4 +1,8 @@
 machine:
+  sysctls:
+    # Hung on a kexec reboot (workload isolation rollout, 2026-10-04);
+    # reboot through firmware instead.
+    kernel.kexec_load_disabled: "1"
   certSANs:
   - epsilon
   - 127.0.0.1
