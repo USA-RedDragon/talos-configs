@@ -5,7 +5,7 @@ cluster:
     - fdeb:abba:237c:fefe:0::/96
     serviceSubnets:
     - 172.18.0.0/16
-    - fdeb:abba:237c:fefe:1::/112
+    - fdeb:ffff:237c::/108
     cni:
       name: none
   proxy:
