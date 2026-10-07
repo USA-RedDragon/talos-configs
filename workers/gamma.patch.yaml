@@ -52,6 +52,11 @@ params:
   class.scsi_host.host3.link_power_management_policy: max_performance
   class.scsi_host.host4.link_power_management_policy: max_performance
   class.scsi_host.host5.link_power_management_policy: max_performance
+  # Three SDRs share the usbfs memory pool here (the RSP1A for trunk-recorder
+  # and the dump978 and ultrafeeder RTL-SDRs). At the 16 MB default the RSP1A's
+  # isochronous submits intermittently failed with errno=12 (ENOMEM), and on
+  # 2026-10-07 its stream never recovered. 0 removes the cap.
+  module.usbcore.parameters.usbfs_memory_mb: "0"
 ---
 apiVersion: v1alpha1
 kind: KernelModuleConfig
