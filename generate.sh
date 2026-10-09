@@ -78,7 +78,7 @@ INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" y
 # is read as a UPS name on localhost. The worker UPS (alpha, beta, gamma, the
 # NAS and switches) hangs off TrueNAS, which serves it as "ups".
 UPS_USER="$(cat secrets.yaml | yq -r .nut.user)" UPS_PASS="$(cat secrets.yaml | yq -r .nut.pass)" UPS_HOST="ups@192.168.1.135" envsubst < nut.yaml.tpl > nut.worker.yaml
-UPS_USER="$(cat secrets.yaml | yq -r .nut.user)" UPS_PASS="$(cat secrets.yaml | yq -r .nut.pass)" UPS_HOST="192.168.1.19" envsubst < nut.yaml.tpl > nut.controlplane.yaml
+UPS_USER="$(cat secrets.yaml | yq -r .nut.user)" UPS_PASS="$(cat secrets.yaml | yq -r .nut.pass)" UPS_HOST="ups@192.168.1.19" envsubst < nut.yaml.tpl > nut.controlplane.yaml
 
 cat alpha.yaml nut.worker.yaml > alpha.yaml.tmp
 mv alpha.yaml.tmp alpha.yaml
