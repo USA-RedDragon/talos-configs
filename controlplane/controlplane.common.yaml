@@ -127,10 +127,12 @@ certExtraSANs:
 - 192.168.1.250
 - 192.168.1.249
 - 127.0.0.1
+env:
+  GOMEMLIMIT: 3500MiB
 resources:
   requests:
     cpu: 1000m
-    memory: 7Gi
+    memory: 4Gi
 # The legacy .cluster.apiServer path never added startup probes; keep it that way.
 startupProbes: false
 ---
@@ -210,3 +212,43 @@ apiVersion: v1alpha1
 kind: KubeAdmissionControlConfig
 name: ResourceQuota
 configuration: {}
+---
+apiVersion: v1alpha1
+kind: KubeAuditPolicyConfig
+configuration:
+  apiVersion: audit.k8s.io/v1
+  kind: Policy
+  omitStages:
+    - RequestReceived
+  rules:
+    - level: None
+      resources:
+        - group: coordination.k8s.io
+          resources: ["leases"]
+    - level: None
+      resources:
+        - group: ""
+          resources: ["events"]
+        - group: events.k8s.io
+          resources: ["events"]
+    - level: None
+      nonResourceURLs: ["/healthz*", "/livez*", "/readyz*", "/version", "/metrics"]
+    - level: Metadata
+      resources:
+        - group: ""
+          resources: ["secrets"]
+    - level: None
+      verbs: ["create"]
+      userGroups: ["system:serviceaccounts", "system:nodes"]
+      resources:
+        - group: authorization.k8s.io
+          resources: ["selfsubjectaccessreviews", "selfsubjectrulesreviews", "subjectaccessreviews"]
+        - group: authentication.k8s.io
+          resources: ["tokenreviews", "selfsubjectreviews"]
+    - level: None
+      verbs: ["get", "list", "watch"]
+      userGroups: ["system:serviceaccounts", "system:nodes"]
+    - level: None
+      verbs: ["get", "list", "watch"]
+      users: ["system:apiserver", "system:kube-controller-manager", "system:kube-scheduler"]
+    - level: Metadata
