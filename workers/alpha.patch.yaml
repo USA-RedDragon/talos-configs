@@ -48,6 +48,7 @@ params:
   class.scsi_host.host3.link_power_management_policy: max_performance
   class.scsi_host.host4.link_power_management_policy: max_performance
   class.scsi_host.host5.link_power_management_policy: max_performance
+  module.usbcore.parameters.usbfs_memory_mb: "0"
 ---
 apiVersion: v1alpha1
 kind: KernelModuleConfig
