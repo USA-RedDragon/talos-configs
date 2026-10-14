@@ -6,6 +6,7 @@ customization:
             - siderolabs/amd-ucode
             - siderolabs/amdgpu
             - siderolabs/intel-ucode
+            - siderolabs/realtek-firmware
             - siderolabs/i915
             - siderolabs/i915-ucode
             - siderolabs/v4l-uvc-drivers
