@@ -23,6 +23,7 @@ params:
   # Hung on a kexec reboot (workload isolation rollout, 2026-10-04);
   # reboot through firmware instead.
   kernel.kexec_load_disabled: '1'
+  net.core.rps_sock_flow_entries: '32768'
 ---
 apiVersion: v1alpha1
 kind: SysfsConfig
@@ -43,6 +44,8 @@ params:
   devices.system.cpu.cpu13.cpufreq.scaling_governor: performance
   devices.system.cpu.cpu14.cpufreq.scaling_governor: performance
   devices.system.cpu.cpu15.cpufreq.scaling_governor: performance
+  class.net.enp193s0f3u2.queues.rx-0.rps_cpus: 3fff
+  class.net.enp193s0f3u2.queues.rx-0.rps_flow_cnt: '32768'
 ---
 apiVersion: v1alpha1
 kind: KernelModuleConfig
