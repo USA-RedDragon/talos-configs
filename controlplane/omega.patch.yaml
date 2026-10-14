@@ -20,7 +20,6 @@ kind: KubeNodeConfig
 nodeIP:
   validSubnets:
   - 192.168.1.251/32
-  - fdeb:abba:237c::/48
 ---
 apiVersion: v1alpha1
 kind: SysfsConfig
