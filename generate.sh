@@ -63,11 +63,13 @@ rm worker.yaml
 INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./controlplane/schematic.yaml https://factory.talos.dev/schematics | jq -r .id)
 WORKER_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./workers/schematic.yaml https://factory.talos.dev/schematics | jq -r .id)
 NVIDIA_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./workers/schematic.nvidia.yaml https://factory.talos.dev/schematics | jq -r .id)
+B550_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./workers/schematic.b550.yaml https://factory.talos.dev/schematics | jq -r .id)
+NVIDIA_B550_INSTALLER_ID=$(curl -fSsL -X POST --data-binary @./workers/schematic.nvidia.b550.yaml https://factory.talos.dev/schematics | jq -r .id)
 
 # Use yq to set the installer image ID in the node configs (UnattendedInstallConfig)
-INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' alpha.yaml
-INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' beta.yaml
-GAMMA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(GAMMA_INSTALLER_IMAGE))' gamma.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${B550_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' alpha.yaml
+INSTALLER_IMAGE="factory.talos.dev/installer/${B550_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' beta.yaml
+GAMMA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_B550_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(GAMMA_INSTALLER_IMAGE))' gamma.yaml
 DELTA_INSTALLER_IMAGE="factory.talos.dev/installer/${NVIDIA_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(DELTA_INSTALLER_IMAGE))' delta.yaml
 INSTALLER_IMAGE="factory.talos.dev/installer/${WORKER_INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' epsilon.yaml
 INSTALLER_IMAGE="factory.talos.dev/installer/${INSTALLER_ID}:${TALOS_VERSION}" yq -i 'with(select(.kind == "UnattendedInstallConfig"); .installer.image = strenv(INSTALLER_IMAGE))' omega.yaml
