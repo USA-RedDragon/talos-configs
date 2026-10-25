@@ -6,8 +6,8 @@
     "customManagers": [
         {
             "customType": "regex",
-            "fileMatch": [
-                ".*"
+            "managerFilePatterns": [
+                "/.*/"
             ],
             "matchStrings": [
                 "ghcr\\.io/siderolabs/kubelet:v(?<currentValue>.+)"
@@ -18,8 +18,8 @@
         },
         {
             "customType": "regex",
-            "fileMatch": [
-                ".*"
+            "managerFilePatterns": [
+                "/.*/"
             ],
             "matchStrings": [
                 "ghcr\\.io/usa-reddragon/kubelet:v(?<currentValue>.+)"
