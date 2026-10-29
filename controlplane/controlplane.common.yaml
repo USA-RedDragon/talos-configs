@@ -71,13 +71,13 @@ $patch: delete
 apiVersion: v1alpha1
 kind: KubeProxyConfig
 enabled: false
-image: registry.k8s.io/kube-proxy:v1.37.1
+image: registry.k8s.io/kube-proxy:v1.37.2@sha256:b2e075697d7ab4f0878775dff9e5dccf818b67644437175210ce72fc1ec70551
 extraArgs:
   metrics-bind-address: '0.0.0.0:10249'
 ---
 apiVersion: v1alpha1
 kind: KubeSchedulerConfig
-image: registry.k8s.io/kube-scheduler:v1.37.1
+image: registry.k8s.io/kube-scheduler:v1.37.2@sha256:028c847fc321b8a7f9787f7b1c0840f832d6b68439be2e5c09279ffb14203d6b
 extraArgs:
   bind-address: '0.0.0.0'
 config:
@@ -102,7 +102,7 @@ resources:
 ---
 apiVersion: v1alpha1
 kind: KubeControllerManagerConfig
-image: registry.k8s.io/kube-controller-manager:v1.37.1
+image: registry.k8s.io/kube-controller-manager:v1.37.2@sha256:28e62daf706ed815a8bd1dd27b03294ba09421b2e1674e9a83bbac38e24ceb0c
 # node-cidr-mask-size-ipv6 comes from KubeNetworkConfig.nodeCIDRMaskSizeIPv6.
 extraArgs:
   bind-address: '0.0.0.0'
@@ -113,7 +113,7 @@ resources:
 ---
 apiVersion: v1alpha1
 kind: KubeAPIServerConfig
-image: registry.k8s.io/kube-apiserver:v1.37.1
+image: registry.k8s.io/kube-apiserver:v1.37.2@sha256:3e563afb5cb5b72a10bac7012698dd09f5a42bde7d22de8d7d3c12e654df86b4
 # OIDC moved to KubeAuthenticationConfig: --oidc-* flags are rejected here.
 extraArgs:
   service-account-issuer: https://k8s-oidc.mcswain.dev

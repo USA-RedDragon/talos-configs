@@ -4,7 +4,7 @@ machine:
   # and it can't be combined with .machine.kubelet, so moving to it would
   # drop the Longhorn rshared bind mounts. nodeIP lives in KubeNodeConfig.
   kubelet:
-    image: ghcr.io/usa-reddragon/kubelet:v1.37.1
+    image: ghcr.io/usa-reddragon/kubelet:v1.37.2
     extraArgs:
       allowed-unsafe-sysctls: net.ipv4.conf.all.src_valid_mark,net.ipv4.ip_forward,net.ipv6.conf.all.forwarding
       max-pods: "250"
